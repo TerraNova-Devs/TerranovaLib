@@ -54,8 +54,8 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             groupId = 'de.mcterranova'
-            artifactId = 'terranovaLib'
-            version = '0.1.0'
+            artifactId = 'terranova-lib'
+            version = '0.0.2'
         }
     }
     repositories {
