@@ -1,6 +1,7 @@
 plugins {
     id 'maven-publish'
     id 'java'
+    id "io.github.goooler.shadow" version "8.1.8"
 }
 
 group = 'de.mcterranova'
@@ -25,7 +26,7 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     compileOnly("io.th0rgal:oraxen:1.181.0")
-    implementation("org.influxdb:influxdb-java:2.24")
+    implementation("com.influxdb:influxdb-client-java:6.5.0")
 }
 
 def targetJavaVersion = 21
@@ -74,4 +75,14 @@ publishing {
             }
         }
     }
+}
+
+shadowJar {
+    relocate 'com.influxdb', 'de.mcterranova.terranovaLib.shaded.influx'
+    destinationDirectory.set(file("./build/libs"))
+    archiveClassifier.set('all')
+}
+
+tasks.build {
+    dependsOn tasks.shadowJar
 }

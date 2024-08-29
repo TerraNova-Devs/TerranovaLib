@@ -1,19 +1,21 @@
 package de.mcterranova.terranovaLib.silver;
 
-import de.mcterranova.terranovaLib.TerranovaLib;
+import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.domain.WritePrecision;
+import com.influxdb.client.write.Point;
 import io.th0rgal.oraxen.api.OraxenItems;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.influxdb.InfluxDB;
-import org.influxdb.dto.Point;
-
-import java.util.concurrent.TimeUnit;
 
 public class Silver {
-    private static InfluxDB influxDB = TerranovaLib.getInfluxDB();
+    private static InfluxDBClient influxDBClient;
     private static final String SILVER_ITEM_ID = "terranova_silver";
+
+    public static void setInfluxDB(InfluxDBClient influxClient) {
+        influxDBClient = influxClient;
+    }
 
     public static boolean hasEnough(Player player, int amount) {
         int total = 0;
@@ -84,11 +86,16 @@ public class Silver {
     }
 
     private static void logTransactionToInfluxDB(String type, int amount) {
-        influxDB.write(Point.measurement("silver_transactions")
-                .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                .addField("type", type)
-                .addField("amount", amount)
-                .build());
+        if (influxDBClient != null) {
+            Point point = Point.measurement("silver_transactions")
+                    .addTag("type", type)
+                    .addField("amount", amount)
+                    .time(System.currentTimeMillis(), WritePrecision.MS);
+
+            influxDBClient.getWriteApiBlocking().writePoint(point);
+        } else {
+            System.out.println("InfluxDBClient is not initialized.");
+        }
     }
 
     private static boolean isSilver(ItemStack item) {

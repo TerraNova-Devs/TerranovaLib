@@ -1,12 +1,13 @@
 package de.mcterranova.terranovaLib;
 
+import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.InfluxDBClientFactory;
+import de.mcterranova.terranovaLib.silver.Silver;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.influxdb.InfluxDB;
-import org.influxdb.InfluxDBFactory;
 
 public final class TerranovaLib extends JavaPlugin {
-    private static InfluxDB influxDB;
+    private static InfluxDBClient influxDBClient;
 
     @Override
     public void onEnable() {
@@ -14,16 +15,13 @@ public final class TerranovaLib extends JavaPlugin {
         FileConfiguration config = getConfig();
 
         String url = config.getString("influxdb.url");
-        String database = config.getString("influxdb.database");
-        String username = config.getString("influxdb.username");
-        String password = config.getString("influxdb.password");
+        String token = config.getString("influxdb.token");
+        String org = config.getString("influxdb.org");
+        String bucket = config.getString("influxdb.bucket");
 
-        influxDB = InfluxDBFactory.connect(url, username, password);
-        influxDB.setDatabase(database);
-    }
+        influxDBClient = InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket);
 
-    public static InfluxDB getInfluxDB() {
-        return influxDB;
+        Silver.setInfluxDB(influxDBClient);
     }
 
     @Override
