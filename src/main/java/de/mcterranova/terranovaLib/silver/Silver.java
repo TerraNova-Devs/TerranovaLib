@@ -7,7 +7,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.influxdb.InfluxDB;
-import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.Point;
 
 import java.util.concurrent.TimeUnit;
@@ -30,6 +29,10 @@ public class Silver {
     }
 
     public static boolean charge(Player player, int amount) {
+        return charge(player, amount, false);
+    }
+
+    public static boolean charge(Player player, int amount, boolean removed) {
         if (!hasEnough(player, amount)) {
             return false;
         }
@@ -54,7 +57,11 @@ public class Silver {
             }
         }
         player.updateInventory();
-        logTransactionToInfluxDB("consume", amount);
+        if(removed){
+            logTransactionToInfluxDB("consume", amount);
+        } else {
+            logTransactionToInfluxDB("transfer", amount);
+        }
         return true;
     }
 
