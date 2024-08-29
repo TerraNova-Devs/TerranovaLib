@@ -16,10 +16,16 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "Oraxen"
+        url = "https://repo.oraxen.com/releases"
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    compileOnly("io.th0rgal:oraxen:1.180.0")
+    implementation("org.influxdb:influxdb-java:2.22")
 }
 
 def targetJavaVersion = 21
