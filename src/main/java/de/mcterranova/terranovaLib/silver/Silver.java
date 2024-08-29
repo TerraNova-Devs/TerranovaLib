@@ -66,7 +66,6 @@ public class Silver {
     }
 
     public static ItemStack get(int amount) {
-        // Falls Oraxen verwendet wird
         if (OraxenItems.exists(SILVER_ITEM_ID)) {
             ItemStack silverItem = OraxenItems.getItemById(SILVER_ITEM_ID).build();
             silverItem.setAmount(amount);
