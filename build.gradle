@@ -1,10 +1,6 @@
 import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
-//import io.papermc.paperweight.userdev.PaperweightUserDependenciesExtension
-//import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
-
 plugins {
-    //id "io.papermc.paperweight.userdev" version "1.7.1"
     id "io.papermc.paperweight.userdev" version "1.7.2"
     id("xyz.jpenilla.run-paper") version "2.3.0"
     id 'maven-publish'
@@ -39,29 +35,19 @@ repositories {
     }
 }
 
-// Use Mojang Mappings
-//paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION
-// Use Spigot Mappings
-//paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
-//for groovy
-
 paperweight {
     reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
+    //Spigot Mappins
+    //reobfArtifactConfiguration = ReobfArtifactConfiguration.getREOBF_PRODUCTION()
 }
 
 
 dependencies {
-    //PaperweightUserDependenciesExtension.paperDevBundle("1.21-R0.1-SNAPSHOT")
-    //extensions.getByType(PaperweightUserDependenciesExtension::class).paperDevBundle("1.21-R0.1-SNAPSHOT")
-    //paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.21-R0.1-SNAPSHOT")
     paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
-    //compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
-    //classpath("io.papermc.paperweight:paperweight-userdev:1.7.2")
     compileOnly("io.th0rgal:oraxen:1.181.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
 
 }
-
 
 
 def targetJavaVersion = 21
