@@ -40,7 +40,7 @@ paperweight {
 
 dependencies {
     //PaperweightUserDependenciesExtension.paperDevBundle("1.21-R0.1-SNAPSHOT")
-    //extensions.getByType(PaperweightUserDependenciesExtension::class).paperDevBundle("1.21-R0.1-SNAPSHOT")
+    extensions.getByType(PaperweightUserDependenciesExtension::class).paperDevBundle("1.21-R0.1-SNAPSHOT")
     //compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     //classpath "io.papermc.paperweight:paperweight-userdev:1.7.2"
     compileOnly("io.th0rgal:oraxen:1.181.0")
