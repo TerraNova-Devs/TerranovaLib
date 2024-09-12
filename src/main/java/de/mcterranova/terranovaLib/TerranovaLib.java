@@ -28,7 +28,6 @@ public final class TerranovaLib extends JavaPlugin {
         String bucket = config.getString("influxdb.bucket");
 
         influxDBClient = InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket);
-
         Silver.setInfluxDB(influxDBClient);
     }
 

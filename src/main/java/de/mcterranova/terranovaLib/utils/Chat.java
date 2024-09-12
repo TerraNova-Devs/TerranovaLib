@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import java.util.Random;
 
 public class Chat {
+    public Chat() {
+    }
 
     public static void sendMessage(Player p, String message) {
         p.sendMessage(MiniMessage.miniMessage().deserialize("<gradient:#88EBFF:#C9FFC2>" + message + "</gradient>"));
@@ -51,7 +53,7 @@ public class Chat {
     }
 
     public static Component inputSaveComponent(String message) {
-        return PlainTextComponentSerializer.plainText().deserialize(message.replaceAll("","<").replaceAll("",">"));
+        return PlainTextComponentSerializer.plainText().deserialize(message.replaceAll("", "<").replaceAll("", ">"));
     }
 
     public static String componentToLegacy(Component component) {
@@ -60,7 +62,7 @@ public class Chat {
 
     public static String getRandomColor() {
         Random random = new Random();
-        int nextInt = random.nextInt(0xffffff + 1);
+        int nextInt = random.nextInt(16777216);
         return String.format("#%06x", nextInt);
     }
 }

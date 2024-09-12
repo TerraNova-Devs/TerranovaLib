@@ -25,8 +25,9 @@ java {
 repositories {
     mavenCentral()
     gradlePluginPortal()
-    maven{
-        "https://papermc.io/repo/repository/maven-public/"
+    maven {
+        name = "papermc-repo"
+        url = "https://repo.papermc.io/repository/maven-public/"
     }
     maven {
         name = "Oraxen"
@@ -49,13 +50,13 @@ paperweight {
 }
 
 
-
 dependencies {
     //PaperweightUserDependenciesExtension.paperDevBundle("1.21-R0.1-SNAPSHOT")
     //extensions.getByType(PaperweightUserDependenciesExtension::class).paperDevBundle("1.21-R0.1-SNAPSHOT")
-    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.21-R0.1-SNAPSHOT")
+    //paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.21-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
     //compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
-    classpath "io.papermc.paperweight:paperweight-userdev:1.7.2"
+    //classpath("io.papermc.paperweight:paperweight-userdev:1.7.2")
     compileOnly("io.th0rgal:oraxen:1.181.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
 
