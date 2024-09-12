@@ -1,5 +1,5 @@
-import io.papermc.paperweight.userdev.PaperweightUserDependenciesExtension
-import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
+//import io.papermc.paperweight.userdev.PaperweightUserDependenciesExtension
+//import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
     //id "io.papermc.paperweight.userdev" version "1.7.1"
@@ -21,6 +21,11 @@ java {
 }
 
 repositories {
+    mavenCentral()
+    gradlePluginPortal()
+    maven{
+        "https://papermc.io/repo/repository/maven-public/"
+    }
     maven {
         name = "Oraxen"
         url = "https://repo.oraxen.com/releases"
