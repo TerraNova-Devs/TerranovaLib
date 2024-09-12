@@ -27,12 +27,17 @@ repositories {
 }
 
 // Use Mojang Mappings
-paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION
+//paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION
 // Use Spigot Mappings
 //paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.REOBF_PRODUCTION
+//for groovy
+paperweight {
+    reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION
+}
 
 dependencies {
-    PaperweightUserDependenciesExtension.paperDevBundle("1.21-R0.1-SNAPSHOT")
+    //PaperweightUserDependenciesExtension.paperDevBundle("1.21-R0.1-SNAPSHOT")
+    extensions.getByType(PaperweightUserDependenciesExtension::class).paperDevBundle("1.21-R0.1-SNAPSHOT")
     //compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     compileOnly("io.th0rgal:oraxen:1.181.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
