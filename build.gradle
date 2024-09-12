@@ -2,7 +2,8 @@ import io.papermc.paperweight.userdev.PaperweightUserDependenciesExtension
 import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
-    id "io.papermc.paperweight.userdev" version "1.7.1"
+    //id "io.papermc.paperweight.userdev" version "1.7.1"
+    id "io.papermc.paperweight.userdev" version "1.7.2"
     id("xyz.jpenilla.run-paper") version "2.3.0"
     id 'maven-publish'
     id 'java'
@@ -24,9 +25,10 @@ repositories {
         name = "Oraxen"
         url = "https://repo.oraxen.com/releases"
     }
-    //maven {
-    //    url "https://plugins.gradle.org/m2/"
-    //}
+    maven {
+        name = "Paperweight"
+        url "https://plugins.gradle.org/m2/"
+    }
 }
 
 // Use Mojang Mappings
@@ -40,9 +42,10 @@ paperweight {
 
 dependencies {
     //PaperweightUserDependenciesExtension.paperDevBundle("1.21-R0.1-SNAPSHOT")
-    extensions.getByType(PaperweightUserDependenciesExtension::class).paperDevBundle("1.21-R0.1-SNAPSHOT")
+    //extensions.getByType(PaperweightUserDependenciesExtension::class).paperDevBundle("1.21-R0.1-SNAPSHOT")
+    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.21-R0.1-SNAPSHOT")
     //compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
-    //classpath "io.papermc.paperweight:paperweight-userdev:1.7.2"
+    classpath "io.papermc.paperweight:paperweight-userdev:1.7.2"
     compileOnly("io.th0rgal:oraxen:1.181.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
 
