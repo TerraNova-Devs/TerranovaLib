@@ -1,33 +1,54 @@
+import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
+
 plugins {
+    id "io.papermc.paperweight.userdev" version "1.7.2"
+    id("xyz.jpenilla.run-paper") version "2.3.0"
     id 'maven-publish'
     id 'java'
     id "io.github.goooler.shadow" version "8.1.8"
+
 }
 
 group = 'de.mcterranova'
 version = '0.5.0'
+description = 'Lib for TerraNova Server.'
+
+java {
+    // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
     maven {
         name = "papermc-repo"
         url = "https://repo.papermc.io/repository/maven-public/"
     }
     maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
-    maven {
         name = "Oraxen"
         url = "https://repo.oraxen.com/releases"
     }
+    maven {
+        name = "Paperweight"
+        url "https://plugins.gradle.org/m2/"
+    }
 }
 
+paperweight {
+    reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
+    //Spigot Mappins
+    //reobfArtifactConfiguration = ReobfArtifactConfiguration.getREOBF_PRODUCTION()
+}
+
+
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
     compileOnly("io.th0rgal:oraxen:1.181.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
+
 }
+
 
 def targetJavaVersion = 21
 java {
