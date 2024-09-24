@@ -6,10 +6,12 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -28,12 +30,17 @@ public class RoseItem {
     private Consumer<InventoryDragEvent> dragAction;
 
     private RoseItem(Builder builder) {
-        ItemStack stack = new ItemStack(builder.material);
+        ItemStack stack = new ItemStack(builder.builderStack);
         ItemMeta meta = stack.getItemMeta();
         if(builder.displayname != null) meta.displayName(builder.displayname);
         if (builder.lore != null) meta.lore(builder.lore);
         if (builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
-        if(builder.skullTexture != null) mutateSkullMetaSkinBy64(builder.skullTexture,(SkullMeta) meta);
+        if(builder.builderStack.getType().equals(Material.PLAYER_HEAD) && builder.skullTexture != null) mutateSkullMetaSkinBy64(builder.skullTexture,(SkullMeta) meta);
+        if(builder.builderStack.getType().equals(Material.COMPASS) && builder.compassLocation != null) {
+            CompassMeta compassMeta = (CompassMeta) meta;
+            compassMeta.setLodestoneTracked(false);
+            compassMeta.setLodestone(builder.compassLocation);
+        }
         stack.setItemMeta(meta);
         this.stack = stack;
         this.dragAction = event -> {
@@ -67,23 +74,24 @@ public class RoseItem {
 
     public static class Builder {
 
-        ItemStack material;
+        ItemStack builderStack;
         Component displayname;
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
         String skullTexture;
+        Location compassLocation;
 
         public Builder material(String material) {
             if (OraxenItems.exists(material)) {
-                this.material = OraxenItems.getItemById(material).build();
+                this.builderStack = OraxenItems.getItemById(material).build();
             } else {
-                this.material = new ItemStack(Material.valueOf(material));
+                this.builderStack = new ItemStack(Material.valueOf(material));
             }
             return this;
         }
 
         public Builder material(Material material) {
-            this.material = new ItemStack(material);
+            this.builderStack = new ItemStack(material);
             return this;
         }
 
@@ -123,8 +131,14 @@ public class RoseItem {
         }
 
         public Builder setSkull(String texture) {
-            this.material = new ItemStack(Material.PLAYER_HEAD);
+            this.builderStack = new ItemStack(Material.PLAYER_HEAD);
             this.skullTexture = texture;
+            return this;
+        }
+
+        public Builder setCompass(Location location) {
+            this.builderStack = new ItemStack(Material.COMPASS);
+            this.compassLocation = location;
             return this;
         }
 

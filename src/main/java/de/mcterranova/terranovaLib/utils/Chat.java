@@ -4,8 +4,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class Chat {
@@ -58,6 +62,22 @@ public class Chat {
 
     public static String componentToLegacy(Component component) {
         return LegacyComponentSerializer.legacyAmpersand().serialize(component);
+    }
+
+    public static String prettyLocation(Location loc) {
+        return (int) loc.x() + ", " + (int) loc.y() + ", " + (int) loc.z();
+    }
+
+    public static String prettyInstantDay(Instant instant) {
+        return DateTimeFormatter.ofPattern("dd-MMM-yyyy").withZone(ZoneId.systemDefault()).format(instant);
+    }
+
+    public static String prettyInstantTime(Instant instant) {
+        return DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault()).format(instant);
+    }
+
+    public static String prettyInstant(Instant instant) {
+        return DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm").withZone(ZoneId.systemDefault()).format(instant);
     }
 
     public static String getRandomColor() {
