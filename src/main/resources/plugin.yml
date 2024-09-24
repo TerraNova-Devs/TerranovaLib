@@ -1,5 +1,5 @@
 name: TerranovaLib
-version: '1.0-SNAPSHOT'
+version: '0.6.0'
 main: de.mcterranova.terranovaLib.TerranovaLib
 api-version: '1.21'
 authors: [Bastizeit, gerryxn]
