@@ -35,8 +35,8 @@ dependencies {
 ### gradle.properties
 
 ```
-gpr.user="<username>"
-gpr.token="<token>"
+gpr.user=<username>
+gpr.token=<token>
 ```
 
 ### As a .env file (more secure)
