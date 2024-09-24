@@ -1,6 +1,5 @@
 package de.mcterranova.terranovaLib.utils;
 
-import de.mcterranova.terranovaLib.violetPDC.DataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;

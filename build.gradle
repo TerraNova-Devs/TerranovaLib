@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'de.mcterranova'
-version = '0.6.0'
+version = '0.6.1'
 description = 'Lib for TerraNova Server.'
 
 java {
@@ -83,7 +83,7 @@ publishing {
             from components.java
             groupId = 'de.mcterranova'
             artifactId = 'terranova-lib'
-            version = '0.5.0'
+            version = version
         }
     }
     repositories {
