@@ -35,12 +35,6 @@ public class RoseItem {
         if(builder.displayname != null) meta.displayName(builder.displayname);
         if (builder.lore != null) meta.lore(builder.lore);
         if (builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
-        if(builder.builderStack.getType().equals(Material.PLAYER_HEAD) && builder.skullTexture != null) mutateSkullMetaSkinBy64(builder.skullTexture,(SkullMeta) meta);
-        if(builder.builderStack.getType().equals(Material.COMPASS) && builder.compassLocation != null) {
-            CompassMeta compassMeta = (CompassMeta) meta;
-            compassMeta.setLodestoneTracked(false);
-            compassMeta.setLodestone(builder.compassLocation);
-        }
         stack.setItemMeta(meta);
         this.stack = stack;
         this.dragAction = event -> {
@@ -79,7 +73,6 @@ public class RoseItem {
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
         String skullTexture;
-        Location compassLocation;
 
         public Builder material(String material) {
             if (OraxenItems.exists(material)) {
@@ -132,13 +125,16 @@ public class RoseItem {
 
         public Builder setSkull(String texture) {
             this.builderStack = new ItemStack(Material.PLAYER_HEAD);
-            this.skullTexture = texture;
+            mutateSkullMetaSkinBy64(texture,(SkullMeta) this.builderStack.getItemMeta());
             return this;
         }
 
         public Builder setCompass(Location location) {
             this.builderStack = new ItemStack(Material.COMPASS);
-            this.compassLocation = location;
+            CompassMeta meta = (CompassMeta) this.builderStack.getItemMeta();
+            meta.setLodestoneTracked(false);
+            meta.setLodestone(location);
+            this.builderStack.setItemMeta(meta);
             return this;
         }
 
@@ -150,7 +146,7 @@ public class RoseItem {
 
     private static Method metaSetProfileMethod;
 
-    private void mutateSkullMetaSkinBy64(String b64, SkullMeta skullMeta) {
+    private static void mutateSkullMetaSkinBy64(String b64, SkullMeta skullMeta) {
         try {
             metaSetProfileMethod = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
             metaSetProfileMethod.setAccessible(true);
