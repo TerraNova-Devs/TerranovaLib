@@ -2,24 +2,28 @@ package de.mcterranova.terranovaLib.roseGUI;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import de.mcterranova.terranovaLib.violetPDC.violetDataType;
 import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -28,6 +32,7 @@ public class RoseItem {
     public ItemStack stack;
     private Consumer<InventoryClickEvent> clickAction;
     private Consumer<InventoryDragEvent> dragAction;
+    private UUID uuid;
 
     private RoseItem(Builder builder) {
         ItemStack stack = new ItemStack(builder.builderStack);
@@ -41,6 +46,7 @@ public class RoseItem {
         };
         this.clickAction = event -> {
         };
+        this.uuid = builder.uuid;
     }
 
     @Nonnull
@@ -66,13 +72,17 @@ public class RoseItem {
         return this;
     }
 
+    public UUID getUUID(){
+        return uuid;
+    }
+
     public static class Builder {
 
         ItemStack builderStack;
         Component displayname;
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
-        String skullTexture;
+        UUID uuid;
 
         public Builder material(String material) {
             if (OraxenItems.exists(material)) {
@@ -134,6 +144,15 @@ public class RoseItem {
             CompassMeta meta = (CompassMeta) this.builderStack.getItemMeta();
             meta.setLodestoneTracked(false);
             meta.setLodestone(location);
+            this.builderStack.setItemMeta(meta);
+            return this;
+        }
+
+        public Builder generateUUID(JavaPlugin plugin){
+            NamespacedKey key = new NamespacedKey(plugin, "uuid");
+            this.uuid = UUID.randomUUID();
+            ItemMeta meta = this.builderStack.getItemMeta();
+            meta.getPersistentDataContainer().set(key, violetDataType.UUID, uuid);
             this.builderStack.setItemMeta(meta);
             return this;
         }
