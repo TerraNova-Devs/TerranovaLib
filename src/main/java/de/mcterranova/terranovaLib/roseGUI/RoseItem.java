@@ -40,13 +40,18 @@ public class RoseItem {
         if(builder.displayname != null) meta.displayName(builder.displayname);
         if (builder.lore != null) meta.lore(builder.lore);
         if (builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
+        if (builder.plugin != null) {
+            NamespacedKey key = new NamespacedKey(builder.plugin, "uuid");
+            this.uuid = UUID.randomUUID();
+            meta.getPersistentDataContainer().set(key, violetDataType.UUID, uuid);
+        }
         stack.setItemMeta(meta);
         this.stack = stack;
         this.dragAction = event -> {
         };
         this.clickAction = event -> {
         };
-        this.uuid = builder.uuid;
+
     }
 
     @Nonnull
@@ -82,7 +87,7 @@ public class RoseItem {
         Component displayname;
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
-        UUID uuid;
+        JavaPlugin plugin;
 
         public Builder material(String material) {
             if (OraxenItems.exists(material)) {
@@ -149,11 +154,7 @@ public class RoseItem {
         }
 
         public Builder generateUUID(JavaPlugin plugin){
-            NamespacedKey key = new NamespacedKey(plugin, "uuid");
-            this.uuid = UUID.randomUUID();
-            ItemMeta meta = this.builderStack.getItemMeta();
-            meta.getPersistentDataContainer().set(key, violetDataType.UUID, uuid);
-            this.builderStack.setItemMeta(meta);
+            this.plugin = plugin;
             return this;
         }
 
