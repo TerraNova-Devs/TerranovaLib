@@ -19,6 +19,7 @@ public final class TerranovaLib extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
         saveDefaultConfig();
         FileConfiguration config = getConfig();
 
