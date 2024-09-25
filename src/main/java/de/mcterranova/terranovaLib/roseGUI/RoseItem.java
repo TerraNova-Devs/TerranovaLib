@@ -10,12 +10,14 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
@@ -88,6 +90,7 @@ public class RoseItem {
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
         JavaPlugin plugin;
+        boolean isCraft;
 
         public Builder material(String material) {
             if (OraxenItems.exists(material)) {
@@ -157,6 +160,14 @@ public class RoseItem {
             this.plugin = plugin;
             return this;
         }
+
+        public Builder isCrafteble(JavaPlugin plugin, boolean isCraft){
+            NamespacedKey key = new NamespacedKey(plugin, "craft");
+            ItemMeta meta = this.builderStack.getItemMeta();
+            meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, isCraft);
+            this.builderStack.setItemMeta(meta);
+            return this;
+        };
 
         public RoseItem build() {
             return new RoseItem(this);
