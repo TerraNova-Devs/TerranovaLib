@@ -88,6 +88,7 @@ public class RoseItem {
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
         JavaPlugin plugin;
+        boolean isCraft;
 
         public Builder material(String material) {
             if (OraxenItems.exists(material)) {
@@ -157,6 +158,11 @@ public class RoseItem {
             this.plugin = plugin;
             return this;
         }
+
+        public Builder isCrafteble(Boolean isCraft){
+            this.isCraft = true;
+            return this;
+        };
 
         public RoseItem build() {
             return new RoseItem(this);
