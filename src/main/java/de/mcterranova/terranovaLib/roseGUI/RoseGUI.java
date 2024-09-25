@@ -38,6 +38,7 @@ public abstract class RoseGUI implements InventoryHolder {
         this.title = LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().build().serialize(title);
         this.id = id;
         this.inventoryType = InventoryType.CHEST;
+
     }
 
     public void open() {

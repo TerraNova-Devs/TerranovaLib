@@ -90,7 +90,6 @@ public class RoseItem {
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
         JavaPlugin plugin;
-        boolean isCraft;
 
         public Builder material(String material) {
             if (OraxenItems.exists(material)) {
