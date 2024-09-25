@@ -161,10 +161,10 @@ public class RoseItem {
             return this;
         }
 
-        public Builder isCrafteble(JavaPlugin plugin){
+        public Builder isCrafteble(JavaPlugin plugin, boolean isCraft){
             NamespacedKey key = new NamespacedKey(plugin, "craft");
             ItemMeta meta = this.builderStack.getItemMeta();
-            meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
+            meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, isCraft);
             this.builderStack.setItemMeta(meta);
             return this;
         };
