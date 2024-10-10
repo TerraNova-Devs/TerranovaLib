@@ -1,5 +1,6 @@
 package de.mcterranova.terranovaLib.roseGUI;
 
+import de.mcterranova.terranovaLib.utils.Chat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -42,14 +43,15 @@ public abstract class RoseGUI implements InventoryHolder {
     }
 
     public void open() {
-        final RoseGUI currentGui = players.get(player.getUniqueId());
-        if (currentGui != null) {
+        RoseGUI currentGui = players.get(player.getUniqueId());
+        while (currentGui != null) {
             //call Bukkit's inventory close event
-            Bukkit.getPluginManager().callEvent(new InventoryCloseEvent(this.player.getOpenInventory()));
+            player.closeInventory();
+            currentGui = players.get(player.getUniqueId());
         }
 
         players.put(this.player.getUniqueId(), this);
-        this.inventory = createInventory(null, this.size, this.title);
+        this.inventory = createInventory(null, this.size, Chat.stringToComponent(this.title));
         this.player.openInventory(inventory);
     }
 
