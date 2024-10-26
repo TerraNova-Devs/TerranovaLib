@@ -105,6 +105,11 @@ public class RoseItem {
             return this;
         }
 
+        public Builder copyStack(ItemStack stack) {
+            this.builderStack = new ItemStack(stack);
+            return this;
+        }
+
         public Builder displayName(String displayname) {
             this.displayname = MiniMessage.miniMessage().deserialize(displayname).decoration(TextDecoration.ITALIC, false);
             return this;
