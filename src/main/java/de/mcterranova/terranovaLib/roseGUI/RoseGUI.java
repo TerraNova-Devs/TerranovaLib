@@ -43,11 +43,10 @@ public abstract class RoseGUI implements InventoryHolder {
     }
 
     public void open() {
-        RoseGUI currentGui = players.get(player.getUniqueId());
-        while (currentGui != null) {
+        final RoseGUI currentGui = players.get(player.getUniqueId());
+        if (currentGui != null) {
             //call Bukkit's inventory close event
-            player.closeInventory();
-            currentGui = players.get(player.getUniqueId());
+            Bukkit.getPluginManager().callEvent(new InventoryCloseEvent(this.player.getOpenInventory()));
         }
 
         players.put(this.player.getUniqueId(), this);

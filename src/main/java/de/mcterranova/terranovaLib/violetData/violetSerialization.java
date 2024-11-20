@@ -1,7 +1,8 @@
 package de.mcterranova.terranovaLib.violetData;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class violetSerialization {
@@ -12,5 +13,13 @@ public class violetSerialization {
 
     public static Instant databaseInstantRE(String instant) {
         return Instant.parse(instant);
+    }
+
+    public static Timestamp databaseTimestampSE(Instant instant) {
+        return Timestamp.from(instant);
+    }
+
+    public static Instant databaseTimestampRE(Timestamp timestamp) {
+        return timestamp.toInstant();
     }
 }
