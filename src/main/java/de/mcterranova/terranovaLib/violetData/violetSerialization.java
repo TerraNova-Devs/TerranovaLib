@@ -5,8 +5,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class violetSerialization {
+    //gut lesbarer 20 Zeichen String
     public static String databaseInstantSE(Instant instant) {
-        return DateTimeFormatter.ofPattern("uuuu-MM-dd'T'HH:mm.ss.SSSSSSSSSX").withZone(ZoneId.systemDefault()).format(instant);
+        return DateTimeFormatter.ISO_INSTANT.format(instant);
     }
 
     public static Instant databaseInstantRE(String instant) {
