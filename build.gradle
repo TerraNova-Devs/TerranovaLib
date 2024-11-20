@@ -44,9 +44,8 @@ paperweight {
 
 dependencies {
     paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
-    compileOnly("io.th0rgal:oraxen:1.181.0")
+    compileOnly("io.th0rgal:oraxen:1.184.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
-
 }
 
 
