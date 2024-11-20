@@ -1,4 +1,4 @@
-package de.mcterranova.terranovaLib.violetPDC.DataTypes;
+package de.mcterranova.terranovaLib.violetData.DataTypes;
 
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;

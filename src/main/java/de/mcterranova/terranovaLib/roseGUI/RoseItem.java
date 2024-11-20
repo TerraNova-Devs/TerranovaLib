@@ -2,7 +2,7 @@ package de.mcterranova.terranovaLib.roseGUI;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import de.mcterranova.terranovaLib.violetPDC.violetDataType;
+import de.mcterranova.terranovaLib.violetData.violetDataType;
 import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -25,7 +25,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -165,7 +164,7 @@ public class RoseItem {
             return this;
         }
 
-        public Builder isCrafteble(JavaPlugin plugin, boolean isCraft){
+        public Builder isCraftable(JavaPlugin plugin, boolean isCraft){
             NamespacedKey key = new NamespacedKey(plugin, "craft");
             ItemMeta meta = this.builderStack.getItemMeta();
             meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, isCraft);

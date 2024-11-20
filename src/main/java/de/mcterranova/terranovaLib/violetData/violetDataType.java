@@ -1,7 +1,7 @@
-package de.mcterranova.terranovaLib.violetPDC;
+package de.mcterranova.terranovaLib.violetData;
 
-import de.mcterranova.terranovaLib.violetPDC.DataTypes.InstantDataType;
-import de.mcterranova.terranovaLib.violetPDC.DataTypes.UUIDDataType;
+import de.mcterranova.terranovaLib.violetData.DataTypes.InstantDataType;
+import de.mcterranova.terranovaLib.violetData.DataTypes.UUIDDataType;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.time.Instant;
