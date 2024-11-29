@@ -10,7 +10,7 @@ plugins {
 }
 
 group = 'de.mcterranova'
-version = '0.7.3'
+version = '0.7.4'
 description = 'Lib for TerraNova Server.'
 
 java {
