@@ -1,8 +1,8 @@
 name: TerranovaLib
-version: '0.7.4'
+version: '0.7.5'
 main: de.mcterranova.terranovaLib.TerranovaLib
 api-version: '1.21'
 authors: [Bastizeit, gerryxn]
-prefix: TerraNova
+prefix: TerraNovaLib
 website: mcterranova.de
 description: Lib for TerraNova Server.
