@@ -1,13 +1,13 @@
-package de.mcterranova.terranovaLib.violetData;
+package de.mcterranova.terranovaLib.persistentData;
 
-import de.mcterranova.terranovaLib.violetData.DataTypes.InstantDataType;
-import de.mcterranova.terranovaLib.violetData.DataTypes.UUIDDataType;
+import de.mcterranova.terranovaLib.persistentData.DataTypes.InstantDataType;
+import de.mcterranova.terranovaLib.persistentData.DataTypes.UUIDDataType;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public interface violetDataType {
+public interface terraDataType {
 
     PersistentDataType<byte[], Instant> Instant = new InstantDataType();
     PersistentDataType<byte[], UUID> UUID = new UUIDDataType();

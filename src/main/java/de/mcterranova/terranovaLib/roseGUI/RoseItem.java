@@ -2,7 +2,7 @@ package de.mcterranova.terranovaLib.roseGUI;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import de.mcterranova.terranovaLib.violetData.violetDataType;
+import de.mcterranova.terranovaLib.persistentData.terraDataType;
 import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -43,7 +43,7 @@ public class RoseItem {
         if (builder.plugin != null) {
             NamespacedKey key = new NamespacedKey(builder.plugin, "uuid");
             this.uuid = UUID.randomUUID();
-            meta.getPersistentDataContainer().set(key, violetDataType.UUID, uuid);
+            meta.getPersistentDataContainer().set(key, terraDataType.UUID, uuid);
         }
         stack.setItemMeta(meta);
         this.stack = stack;
