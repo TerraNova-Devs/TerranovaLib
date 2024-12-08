@@ -6,11 +6,10 @@ plugins {
     id 'maven-publish'
     id 'java'
     id "io.github.goooler.shadow" version "8.1.8"
-
 }
 
 group = 'de.mcterranova'
-version = '0.7.5'
+version = '0.7.6'
 description = 'Lib for TerraNova Server.'
 
 java {
