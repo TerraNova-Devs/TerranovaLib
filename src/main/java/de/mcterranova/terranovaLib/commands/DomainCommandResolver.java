@@ -8,7 +8,7 @@ import java.util.*;
 
 public class DomainCommandResolver {
 
-    private Map<String, Method> commandMethods;
+    private final Map<String, Method> commandMethods;
 
     // Constructor
     public DomainCommandResolver(Map<String, Method> commandMethods) {
@@ -105,7 +105,7 @@ public class DomainCommandResolver {
             }
         }
 
-        if(!bestMatches.isEmpty()) {
+        if (!bestMatches.isEmpty()) {
             p.sendMessage(Chat.errorFade("Possible Commands:"));
             bestMatches.forEach(match -> {
                 CommandAnnotation commandAnnotation = commandMethods.get(match).getAnnotation(CommandAnnotation.class);
@@ -127,7 +127,7 @@ public class DomainCommandResolver {
             joinedCommand = joinedCommand.substring(0, joinedCommand.lastIndexOf("."));
         }
 
-        if(!bestMatches.isEmpty()) {
+        if (!bestMatches.isEmpty()) {
             p.sendMessage(Chat.errorFade("Possible Commands:"));
             bestMatches.forEach(match -> {
                 CommandAnnotation commandAnnotation = commandMethods.get(match).getAnnotation(CommandAnnotation.class);

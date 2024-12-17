@@ -9,8 +9,8 @@ import java.util.function.Supplier;
  */
 public class DomainTabCompletionResolver {
 
-    private List<String[]> domainPartsList;
     protected final Map<String, Supplier<List<String>>> commandTabPlaceholders = new HashMap<>();
+    private final List<String[]> domainPartsList;
 
     public DomainTabCompletionResolver(List<String> domains, Map<String, Supplier<List<String>>> commandTabPlaceholders) {
         this.domainPartsList = new ArrayList<>();

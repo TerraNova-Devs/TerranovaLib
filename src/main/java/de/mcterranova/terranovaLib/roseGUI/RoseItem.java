@@ -29,6 +29,7 @@ import java.util.function.Consumer;
 
 public class RoseItem {
 
+    private static Method metaSetProfileMethod;
     public ItemStack stack;
     private Consumer<InventoryClickEvent> clickAction;
     private Consumer<InventoryDragEvent> dragAction;
@@ -37,7 +38,7 @@ public class RoseItem {
     private RoseItem(Builder builder) {
         ItemStack stack = new ItemStack(builder.builderStack);
         ItemMeta meta = stack.getItemMeta();
-        if(builder.displayname != null) meta.displayName(builder.displayname);
+        if (builder.displayname != null) meta.displayName(builder.displayname);
         if (builder.lore != null) meta.lore(builder.lore);
         if (builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
         if (builder.plugin != null) {
@@ -52,6 +53,23 @@ public class RoseItem {
         this.clickAction = event -> {
         };
 
+    }
+
+    private static void mutateSkullMetaSkinBy64(String b64, SkullMeta skullMeta) {
+        try {
+            metaSetProfileMethod = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
+            metaSetProfileMethod.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        UUID id = new UUID(b64.substring(b64.length() - 20).hashCode(), b64.substring(b64.length() - 10).hashCode());
+        GameProfile profile = new GameProfile(id, "Player");
+        profile.getProperties().put("textures", new Property("textures", b64));
+        try {
+            metaSetProfileMethod.invoke(skullMeta, profile);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Nonnull
@@ -77,7 +95,7 @@ public class RoseItem {
         return this;
     }
 
-    public UUID getUUID(){
+    public UUID getUUID() {
         return uuid;
     }
 
@@ -134,7 +152,8 @@ public class RoseItem {
         }
 
         public Builder addLore(String... lore) {
-            for (String text : lore) this.lore.add(MiniMessage.miniMessage().deserialize(text).decoration(TextDecoration.ITALIC, false));
+            for (String text : lore)
+                this.lore.add(MiniMessage.miniMessage().deserialize(text).decoration(TextDecoration.ITALIC, false));
             return this;
         }
 
@@ -145,7 +164,7 @@ public class RoseItem {
 
         public Builder setSkull(String texture) {
             this.builderStack = new ItemStack(Material.PLAYER_HEAD);
-            mutateSkullMetaSkinBy64(texture,(SkullMeta) this.builderStack.getItemMeta());
+            mutateSkullMetaSkinBy64(texture, (SkullMeta) this.builderStack.getItemMeta());
             return this;
         }
 
@@ -158,44 +177,24 @@ public class RoseItem {
             return this;
         }
 
-        public Builder generateUUID(JavaPlugin plugin){
+        public Builder generateUUID(JavaPlugin plugin) {
             this.plugin = plugin;
             return this;
         }
 
-        public Builder isCraftable(JavaPlugin plugin, boolean isCraft){
+        public Builder isCraftable(JavaPlugin plugin, boolean isCraft) {
             NamespacedKey key = new NamespacedKey(plugin, "craft");
             ItemMeta meta = this.builderStack.getItemMeta();
             meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, isCraft);
             this.builderStack.setItemMeta(meta);
             return this;
-        };
+        }
 
         public RoseItem build() {
             return new RoseItem(this);
         }
 
     }
-
-    private static Method metaSetProfileMethod;
-
-    private static void mutateSkullMetaSkinBy64(String b64, SkullMeta skullMeta) {
-        try {
-            metaSetProfileMethod = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
-            metaSetProfileMethod.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        UUID id = new UUID(b64.substring(b64.length() - 20).hashCode(), b64.substring(b64.length() - 10).hashCode());
-        GameProfile profile = new GameProfile(id, "Player");
-        profile.getProperties().put("textures", new Property("textures", b64));
-        try {
-            metaSetProfileMethod.invoke(skullMeta, profile);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
 
 }

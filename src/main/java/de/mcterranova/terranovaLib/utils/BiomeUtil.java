@@ -1,18 +1,13 @@
 package de.mcterranova.terranovaLib.utils;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.biome.Biome;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class BiomeUtil {
 

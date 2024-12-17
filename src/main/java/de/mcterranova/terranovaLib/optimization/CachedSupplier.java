@@ -32,7 +32,7 @@ public class CachedSupplier<T> implements Supplier<T> {
      * Constructs a new CachedSupplier that caches values from the given delegate supplier
      * for the specified cache duration.
      *
-     * @param delegate The underlying supplier that provides the fresh data.
+     * @param delegate            The underlying supplier that provides the fresh data.
      * @param cacheDurationMillis The duration (in milliseconds) that the cache is valid before needing a refresh.
      */
     public CachedSupplier(Supplier<T> delegate, long cacheDurationMillis) {

@@ -15,9 +15,8 @@ public class RoseGUIListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onOpen(final InventoryOpenEvent event) throws SQLException {
-        if (!(event.getPlayer() instanceof Player)) return;
+        if (!(event.getPlayer() instanceof Player player)) return;
 
-        final Player player = (Player) event.getPlayer();
         final RoseGUI openGui = RoseGUI.players.get(player.getUniqueId());
         if (openGui == null) return;
         if (event.isCancelled()) return;
@@ -26,8 +25,7 @@ public class RoseGUIListener implements Listener {
 
     @EventHandler
     public void onClose(final InventoryCloseEvent event) {
-        if (!(event.getPlayer() instanceof Player)) return;
-        final Player player = (Player) event.getPlayer();
+        if (!(event.getPlayer() instanceof Player player)) return;
         final RoseGUI openGui = RoseGUI.players.get(player.getUniqueId());
         if (openGui == null) return;
         if (!event.getInventory().equals(openGui.getInventory())) return;
@@ -74,8 +72,7 @@ public class RoseGUIListener implements Listener {
 
     @EventHandler
     public void onDrag(final InventoryDragEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
-        final Player player = (Player) event.getWhoClicked();
+        if (!(event.getWhoClicked() instanceof Player player)) return;
         final RoseGUI openGui = RoseGUI.players.get(player.getUniqueId());
         if (openGui == null) return;
 

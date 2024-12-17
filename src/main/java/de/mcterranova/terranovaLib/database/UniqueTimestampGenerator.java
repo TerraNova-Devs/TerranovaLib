@@ -44,5 +44,5 @@ public class UniqueTimestampGenerator {
 
         return Timestamp.from(instant);
     }
-    
+
 }

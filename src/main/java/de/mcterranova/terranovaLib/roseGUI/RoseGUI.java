@@ -1,6 +1,5 @@
 package de.mcterranova.terranovaLib.roseGUI;
 
-import de.mcterranova.terranovaLib.utils.Chat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -21,14 +20,13 @@ import static org.bukkit.Bukkit.createInventory;
 public abstract class RoseGUI implements InventoryHolder {
 
     public final static HashMap<UUID, RoseGUI> players = new HashMap<>();
-
+    public final Player player;
     private final Map<Integer, RoseItem> registeredIcons;
     private final List<BukkitTask> taskList = new ArrayList<>();
-    public final Player player;
     private final String id;
-    private String title;
-    private int size;
     private final InventoryType inventoryType;
+    private final String title;
+    private final int size;
     private Inventory inventory;
     private boolean isClosed = false;
 
@@ -93,9 +91,7 @@ public abstract class RoseGUI implements InventoryHolder {
 
     @Nullable
     public RoseGUI getGuiFromInventory(final Inventory inventory) {
-        return players.values().stream()
-                .filter(gui -> gui.getInventory().equals(inventory))
-                .findFirst().orElse(null);
+        return players.values().stream().filter(gui -> gui.getInventory().equals(inventory)).findFirst().orElse(null);
     }
 
     public void setClosed(boolean closed) {

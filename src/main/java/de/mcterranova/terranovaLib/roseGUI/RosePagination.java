@@ -84,13 +84,11 @@ public class RosePagination {
     }
 
     public int getLastPage() {
-        if (this.slots.isEmpty() || this.items.isEmpty())
-            return 0;
+        if (this.slots.isEmpty() || this.items.isEmpty()) return 0;
 
         int division = (int) Math.floor(this.items.size() / this.slots.size());
 
-        if (this.items.size() % this.slots.size() == 0)
-            return division - 1;
+        if (this.items.size() % this.slots.size() == 0) return division - 1;
         return division;
     }
 
