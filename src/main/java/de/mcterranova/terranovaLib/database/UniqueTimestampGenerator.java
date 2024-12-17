@@ -13,30 +13,36 @@ public class UniqueTimestampGenerator {
 
     /**
      * Generates a unique timestamp for a specific UUID. Ensures that timestamps are unique
-     * for each UUID but can overlap across different UUIDs. (Exact up to nanoseconds)
+     * for each UUID but can overlap across different UUIDs. (Exact up to microseconds)
      *
      * @param id The UUID for which the timestamp is generated.
-     * @return A unique Timestamp.
+     * @return A unique Timestamp with microsecond precision.
      */
     public synchronized Timestamp generate(UUID id) {
         // Get the current time in milliseconds since epoch
         long currentTimeMillis = System.currentTimeMillis();
 
-        // Get nanoseconds for precision
+        // Get nanoseconds for additional precision and convert to microseconds
         long currentNanoTime = System.nanoTime();
-        long nanoTimestamp = currentTimeMillis * 1_000_000 + (currentNanoTime % 1_000_000);
+        long microTimestamp = currentTimeMillis * 1_000_000 + (currentNanoTime / 1_000) % 1_000_000;
 
         // Ensure uniqueness for the given UUID
-        long lastNanoTimestamp = lastTimestamps.getOrDefault(id, 0L);
-        if (nanoTimestamp <= lastNanoTimestamp) {
-            nanoTimestamp = lastNanoTimestamp + 1;
+        long lastMicroTimestamp = lastTimestamps.getOrDefault(id, 0L);
+        if (microTimestamp <= lastMicroTimestamp) {
+            microTimestamp = lastMicroTimestamp + 1;
         }
 
         // Update the last timestamp for this UUID
-        lastTimestamps.put(id, nanoTimestamp);
+        lastTimestamps.put(id, microTimestamp);
 
-        // Convert nanoseconds to a Timestamp
-        return Timestamp.from(Instant.ofEpochMilli(nanoTimestamp / 1_000_000)
-                .plusNanos(nanoTimestamp % 1_000_000));
+        // Convert microseconds to a Timestamp
+        long epochMillis = microTimestamp / 1_000_000;
+        int microAdjustment = (int) (microTimestamp % 1_000_000);
+
+        // Create an Instant with microsecond precision
+        Instant instant = Instant.ofEpochMilli(epochMillis).plusNanos(microAdjustment * 1_000);
+
+        return Timestamp.from(instant);
     }
+    
 }
