@@ -1,5 +1,5 @@
 name: TerranovaLib
-version: '0.8.0'
+version: '0.8.1'
 main: de.mcterranova.terranovaLib.TerranovaLib
 api-version: '1.21'
 authors: [Bastizeit, gerryxn]

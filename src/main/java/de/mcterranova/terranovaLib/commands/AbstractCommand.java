@@ -32,6 +32,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     private void postInitialization() {
         tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
+        commandResolver = new DomainCommandResolver(commandMethods);
     }
 
     protected void addPlaceholder(String key, Supplier<List<String>> replacements) {
@@ -75,7 +76,6 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage("Usage: /" + command.getName() + " help <" + String.join("|", commandClasses.keySet()) + ">");
             return true;
         }
-
 
         Method commandMethod = commandResolver.matchCommands(args, player);
 
