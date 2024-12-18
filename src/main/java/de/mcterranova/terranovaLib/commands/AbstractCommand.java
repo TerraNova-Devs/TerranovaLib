@@ -19,7 +19,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     protected final Map<String, Method> commandMethods = new HashMap<>();
     protected final Map<String, Class<?>> commandClasses = new HashMap<>();
-    protected final Map<String, Supplier<List<String>>> commandTabPlaceholders = new HashMap<>();
+    protected Map<String, Supplier<List<String>>> commandTabPlaceholders = registerPlaceholders();
 
     DomainCommandResolver commandResolver;
     DomainTabCompletionResolver tabResolver;
@@ -27,16 +27,17 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     public AbstractCommand() {
         registerSubCommands();
         setupHelpCommand();
-        postInitialization();
-    }
-
-    private void postInitialization() {
         tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
         commandResolver = new DomainCommandResolver(commandMethods);
     }
 
-    protected void addPlaceholder(String key, Supplier<List<String>> replacements) {
+    public void addPlaceholder(String key, Supplier<List<String>> replacements) {
         this.commandTabPlaceholders.put(key, replacements);
+        this.tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
+    }
+
+    Map<String, Supplier<List<String>>> registerPlaceholders() {
+        return null;
     }
 
     protected abstract void registerSubCommands();
