@@ -28,22 +28,15 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     DomainCommandResolver commandResolver;
     DomainTabCompletionResolver tabResolver;
 
-    public AbstractCommand() {
-        setupHelpCommand();
-        tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
-        commandResolver = new DomainCommandResolver(commandMethods);
-    }
-
     public void addPlaceholder(String key, Supplier<List<String>> replacements) {
         this.commandTabPlaceholders.put(key, replacements);
-        this.tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
     }
 
     Map<String, Supplier<List<String>>> registerPlaceholders() {
         return new HashMap<>();
     }
 
-    private void setupHelpCommand() {
+    protected void setupHelpCommand() {
         if (!commandMethods.containsKey("help")) {
             try {
                 Map<String, Method> newEntries = new HashMap<>();
@@ -58,6 +51,13 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
                 System.out.println("ERROR: " + e.getMessage());
             }
         }
+    }
+
+
+    protected void initialize(){
+        setupHelpCommand();
+        tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
+        commandResolver = new DomainCommandResolver(commandMethods);
     }
 
     protected void registerSubCommand(Object instance, String groupName) {
