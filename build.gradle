@@ -9,11 +9,11 @@ plugins {
 }
 
 group = 'de.mcterranova.terranovaLib'
-version = '0.8.3'
+version = '0.8.4'
 description = 'Lib for TerraNova Server.'
 
 java {
-    // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
+    // Configure the java toolchain. This allows Gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
     toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
@@ -74,7 +74,7 @@ processResources {
 }
 
 // Task to generate sources JAR
-tasks.register('sourcesJar', Jar) {
+task sourcesJar(type: Jar) {
     from sourceSets.main.allSource
     archiveClassifier.set("sources")
     description = "Generates a JAR containing the source code."
@@ -82,27 +82,41 @@ tasks.register('sourcesJar', Jar) {
 }
 
 // Task to generate Javadoc JAR (optional)
-tasks.register('javadocJar', Jar) {
+task javadocJar(type: Jar) {
     from javadoc
     archiveClassifier.set("javadoc")
     description = "Generates a JAR containing the Javadoc."
     group = "Documentation"
 }
 
+tasks.named('javadocJar') {
+    dependsOn 'javadoc'
+}
+
+// Configure the Javadoc task to be more lenient
+tasks.withType(Javadoc) {
+    // Option A: Disable Doclint entirely
+    // options.addStringOption('Xdoclint:none', '-quiet')
+
+    // Option B: Customize Doclint to ignore missing Javadocs
+    options.addStringOption('Xdoclint', 'all,-missing')
+    options.encoding = 'UTF-8'
+    options.links("https://docs.oracle.com/javase/8/docs/api/")
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'de.mcterranova' as Publication
-            artifactId = 'terranova-lib' as Publication
-            version = version as Publication
+            groupId = 'de.mcterranova'
+            artifactId = 'terranova-lib'
+            version = version
 
             // Include the sources JAR
             artifact sourcesJar
 
-            // Include the Javadoc JAR
+            // Include the javadoc JAR (optional)
             artifact javadocJar
-
         }
     }
     repositories {
