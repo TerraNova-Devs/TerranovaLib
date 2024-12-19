@@ -8,7 +8,7 @@ plugins {
     id "io.github.goooler.shadow" version "8.1.8"
 }
 
-group = 'de.mcterranova'
+group = 'de.mcterranova.terranovaLib'
 version = '0.8.2'
 description = 'Lib for TerraNova Server.'
 
@@ -36,17 +36,15 @@ repositories {
 
 paperweight {
     reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
-    //Spigot Mappins
+    //Spigot Mappings
     //reobfArtifactConfiguration = ReobfArtifactConfiguration.getREOBF_PRODUCTION()
 }
-
 
 dependencies {
     paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
     compileOnly("io.th0rgal:oraxen:1.184.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
 }
-
 
 def targetJavaVersion = 21
 java {
@@ -75,13 +73,36 @@ processResources {
     }
 }
 
+// Task to generate sources JAR
+tasks.register('sourcesJar', Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier.set("sources")
+    description = "Generates a JAR containing the source code."
+    group = "Build"
+}
+
+// Task to generate Javadoc JAR (optional)
+tasks.register('javadocJar', Jar) {
+    from javadoc
+    archiveClassifier.set("javadoc")
+    description = "Generates a JAR containing the Javadoc."
+    group = "Documentation"
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'de.mcterranova'
-            artifactId = 'terranova-lib'
-            version = version
+            groupId = 'de.mcterranova' as Publication
+            artifactId = 'terranova-lib' as Publication
+            version = version as Publication
+
+            // Include the sources JAR
+            artifact sourcesJar
+
+            // Include the Javadoc JAR
+            artifact javadocJar
+
         }
     }
     repositories {
@@ -104,4 +125,10 @@ shadowJar {
 
 tasks.build {
     dependsOn tasks.shadowJar
+}
+
+// Ensure that publishing depends on sourcesJar and javadocJar
+tasks.withType(PublishToMavenRepository).configureEach {
+    dependsOn tasks.named("sourcesJar")
+    dependsOn tasks.named("javadocJar")
 }
