@@ -29,7 +29,6 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     DomainTabCompletionResolver tabResolver;
 
     public AbstractCommand() {
-        registerSubCommands();
         setupHelpCommand();
         tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
         commandResolver = new DomainCommandResolver(commandMethods);
@@ -43,8 +42,6 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     Map<String, Supplier<List<String>>> registerPlaceholders() {
         return new HashMap<>();
     }
-
-    protected abstract void registerSubCommands();
 
     private void setupHelpCommand() {
         if (!commandMethods.containsKey("help")) {
