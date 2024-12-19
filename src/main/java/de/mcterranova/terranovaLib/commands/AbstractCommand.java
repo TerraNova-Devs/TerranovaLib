@@ -9,17 +9,21 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     protected final Map<String, Method> commandMethods = new HashMap<>();
-    protected final Map<String, Class<?>> commandClasses = new HashMap<>();
+    protected final Map<String, Object> commandClassInstances = new HashMap<>();
     protected Map<String, Supplier<List<String>>> commandTabPlaceholders = registerPlaceholders();
+    protected final Map<String, Class<?>> commandClasses = new HashMap<>();
 
     DomainCommandResolver commandResolver;
     DomainTabCompletionResolver tabResolver;
@@ -37,7 +41,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
     }
 
     Map<String, Supplier<List<String>>> registerPlaceholders() {
-        return null;
+        return new HashMap<>();
     }
 
     protected abstract void registerSubCommands();
@@ -46,6 +50,9 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
         if (!commandMethods.containsKey("help")) {
             try {
                 Map<String, Method> newEntries = new HashMap<>();
+                for (String group : commandClassInstances.keySet()) {
+                    newEntries.put("help." + group, AbstractCommand.class.getDeclaredMethod("help", Player.class, String[].class, String.class, Map.class));
+                }
                 for (String group : commandClasses.keySet()) {
                     newEntries.put("help." + group, AbstractCommand.class.getDeclaredMethod("help", Player.class, String[].class, String.class, Map.class));
                 }
@@ -56,9 +63,21 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
         }
     }
 
+    protected void registerSubCommand(Object instance, String groupName) {
+        for (Method method : instance.getClass().getDeclaredMethods()) {
+            if (method.isAnnotationPresent(CommandAnnotation.class)) {
+                if(Modifier.isStatic(method.getModifiers())) continue;
+                CommandAnnotation annotation = method.getAnnotation(CommandAnnotation.class);
+                commandMethods.put(annotation.domain(), method);
+            }
+        }
+        commandClassInstances.put(groupName, instance);
+    }
+
     protected void registerSubCommand(Class<?> clazz, String groupName) {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(CommandAnnotation.class)) {
+                if(!Modifier.isStatic(method.getModifiers())) continue;
                 CommandAnnotation annotation = method.getAnnotation(CommandAnnotation.class);
                 commandMethods.put(annotation.domain(), method);
             }
@@ -74,7 +93,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            sender.sendMessage("Usage: /" + command.getName() + " help <" + String.join("|", commandClasses.keySet()) + ">");
+            sender.sendMessage("Usage: /" + command.getName() + " help <" + String.join("|", commandClassInstances.keySet()) + ">");
             return true;
         }
 
@@ -90,9 +109,16 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
         try {
             if(commandMethod.getName().equals("help")) {
-                return help(player,args,command.getName(),commandClasses);
-            }
-            return (boolean) commandMethod.invoke(null, player, args);
+                return help(player,args,command.getName(), Stream.concat(commandClassInstances.entrySet().stream()
+                                .map(entry -> Map.entry(entry.getKey(), entry.getValue().getClass())), commandClasses.entrySet().stream())
+                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (value1, value2) -> value1)));
+            } else
+            if (Modifier.isStatic(commandMethod.getModifiers())) {
+                return (boolean) commandMethod.invoke(null, player, args);
+            } else
+            if(commandClassInstances.containsKey(args[0])) {
+                return (boolean) commandMethod.invoke(commandClassInstances.get(args[0]), player, args);
+            } else throw new RuntimeException("Error Command was found but no instance was avaible to invoke it.");
         } catch (Exception e) {
             player.sendMessage("An error occurred while executing the command. Please try again.");
             e.printStackTrace();
