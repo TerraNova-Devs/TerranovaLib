@@ -4,6 +4,10 @@
 *.ipr
 *.iws
 
+# Project exlude data types
+*.env
+*.properties
+
 # IntelliJ
 out/
 # mpeltonen/sbt-idea plugin
