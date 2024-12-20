@@ -87,9 +87,6 @@ public class DomainCommandResolver {
 
         // Join the input array with dots
         String joinedCommand = String.join(".", input);
-        System.out.println(commandMethods.keySet());
-        System.out.println(resolvedCommandMethods.keySet());
-        System.out.println(joinedCommand);
         // Look up the exact match
         Method exactMatch = resolvedCommandMethods.get(joinedCommand);
         if (exactMatch != null) {
