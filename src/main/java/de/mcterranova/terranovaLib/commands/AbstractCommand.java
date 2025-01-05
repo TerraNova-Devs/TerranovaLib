@@ -10,30 +10,45 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
+    // Old: protected Map<String, Supplier<List<String>>> commandTabPlaceholders = registerPlaceholders();
+    // New: store placeholders as PlayerAwarePlaceholder
+    protected final Map<String, PlayerAwarePlaceholder> commandTabPlaceholders = registerPlaceholders();
+
     protected final Map<String, Method> commandMethods = new HashMap<>();
     protected final Map<String, Object> commandClassInstances = new HashMap<>();
-    protected Map<String, Supplier<List<String>>> commandTabPlaceholders = registerPlaceholders();
     protected final Map<String, Class<?>> commandClasses = new HashMap<>();
 
     DomainCommandResolver commandResolver;
     DomainTabCompletionResolver tabResolver;
 
-    public void addPlaceholder(String key, Supplier<List<String>> replacements) {
-        this.commandTabPlaceholders.put(key, replacements);
+    /**
+     * Here we now return a Map<String, PlayerAwarePlaceholder> instead of
+     * Map<String, Supplier<List<String>>>
+     */
+    Map<String, PlayerAwarePlaceholder> registerPlaceholders() {
+        return new HashMap<>();
     }
 
-    Map<String, Supplier<List<String>>> registerPlaceholders() {
-        return new HashMap<>();
+    /**
+     * Overload: Add a placeholder that does NOT depend on the player
+     */
+    public void addPlaceholder(String key, Supplier<List<String>> replacements) {
+        this.commandTabPlaceholders.put(key, PlayerAwarePlaceholder.ofStatic(replacements));
+    }
+
+    /**
+     * Overload: Add a placeholder that DOES depend on the player's UUID
+     */
+    public void addPlaceholder(String key, Function<UUID, List<String>> replacements) {
+        this.commandTabPlaceholders.put(key, PlayerAwarePlaceholder.ofPlayerFunction(replacements));
     }
 
     protected void setupHelpCommand() {
@@ -41,10 +56,12 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
             try {
                 Map<String, Method> newEntries = new HashMap<>();
                 for (String group : commandClassInstances.keySet()) {
-                    newEntries.put("help." + group, AbstractCommand.class.getDeclaredMethod("help", Player.class, String[].class, String.class, Map.class));
+                    newEntries.put("help." + group, AbstractCommand.class
+                            .getDeclaredMethod("help", Player.class, String[].class, String.class, Map.class));
                 }
                 for (String group : commandClasses.keySet()) {
-                    newEntries.put("help." + group, AbstractCommand.class.getDeclaredMethod("help", Player.class, String[].class, String.class, Map.class));
+                    newEntries.put("help." + group, AbstractCommand.class
+                            .getDeclaredMethod("help", Player.class, String[].class, String.class, Map.class));
                 }
                 commandMethods.putAll(newEntries);
             } catch (NoSuchMethodException e) {
@@ -53,9 +70,9 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-
-    protected void initialize(){
+    protected void initialize() {
         setupHelpCommand();
+        // Pass our placeholders map to the DomainTabCompletionResolver
         tabResolver = new DomainTabCompletionResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
         commandResolver = new DomainCommandResolver(commandMethods);
     }
@@ -90,12 +107,12 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            sender.sendMessage("Usage: /" + command.getName() + " help <" + String.join("|", commandClassInstances.keySet()) + ">");
+            sender.sendMessage("Usage: /" + command.getName() + " help <" +
+                    String.join("|", commandClassInstances.keySet()) + ">");
             return true;
         }
 
         Method commandMethod = commandResolver.matchCommands(args, player);
-
         if (commandMethod == null) return true;
 
         CommandAnnotation annotation = commandMethod.getAnnotation(CommandAnnotation.class);
@@ -106,16 +123,20 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
         try {
             if(commandMethod.getName().equals("help")) {
-                return help(player,args,command.getName(), Stream.concat(commandClassInstances.entrySet().stream()
-                                .map(entry -> Map.entry(entry.getKey(), entry.getValue().getClass())), commandClasses.entrySet().stream())
-                        .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (value1, value2) -> value1)));
-            } else
-            if (Modifier.isStatic(commandMethod.getModifiers())) {
+                return help(player, args, command.getName(),
+                        Stream.concat(commandClassInstances.entrySet().stream()
+                                                .map(entry -> Map.entry(entry.getKey(), entry.getValue().getClass())),
+                                        commandClasses.entrySet().stream())
+                                .collect(Collectors.toMap(Map.Entry::getKey,
+                                        Map.Entry::getValue,
+                                        (value1, value2) -> value1)));
+            } else if (Modifier.isStatic(commandMethod.getModifiers())) {
                 return (boolean) commandMethod.invoke(null, player, args);
-            } else
-            if(commandClassInstances.containsKey(args[0])) {
+            } else if(commandClassInstances.containsKey(args[0])) {
                 return (boolean) commandMethod.invoke(commandClassInstances.get(args[0]), player, args);
-            } else throw new RuntimeException("Error Command was found but no instance was avaible to invoke it.");
+            } else {
+                throw new RuntimeException("Error: Command was found but no instance was available to invoke it.");
+            }
         } catch (Exception e) {
             player.sendMessage("An error occurred while executing the command. Please try again.");
             e.printStackTrace();
@@ -128,7 +149,10 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
             p.sendMessage("You do not have permission (" + commandPrefix + ".help." + args[1] + ") to execute this command.");
             return true;
         }
-        p.sendMessage(Chat.greenFade("---------" + commandClasses.get(args[1]).getSimpleName() + " Help ---------").decorate(TextDecoration.BOLD));
+        p.sendMessage(Chat.greenFade("---------" +
+                        commandClasses.get(args[1]).getSimpleName() +
+                        " Help ---------")
+                .decorate(TextDecoration.BOLD));
         for (Method method : commandClasses.get(args[1]).getDeclaredMethods()) {
             if (method.isAnnotationPresent(CommandAnnotation.class)) {
                 CommandAnnotation commandAnnotation = method.getAnnotation(CommandAnnotation.class);
@@ -141,9 +165,12 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
         return true;
     }
 
+    /**
+     * Refactored tab complete method: we pass the CommandSender to the resolver
+     */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return tabResolver.getNextElements(args);
+        return tabResolver.getNextElements(sender, args);
     }
 }
 

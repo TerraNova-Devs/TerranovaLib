@@ -1,27 +1,35 @@
 package de.mcterranova.terranovaLib.commands;
 
+import org.bukkit.command.CommandSender;
+
 import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * The DomainTabCompleter class processes a list of domain strings and provides
- * functionality to retrieve the next possible domain elements based on input arguments.
+ * The DomainTabCompletionResolver class processes a list of domain strings
+ * and provides functionality to retrieve the next possible domain elements
+ * based on input arguments. It now supports player-based placeholders.
  */
 public class DomainTabCompletionResolver {
 
-    protected final Map<String, Supplier<List<String>>> commandTabPlaceholders = new HashMap<>();
+    // Changed from Supplier<List<String>> to PlayerAwarePlaceholder
+    protected final Map<String, PlayerAwarePlaceholder> commandTabPlaceholders;
     private final List<String[]> domainPartsList;
 
-    public DomainTabCompletionResolver(List<String> domains, Map<String, Supplier<List<String>>> commandTabPlaceholders) {
+    public DomainTabCompletionResolver(List<String> domains,
+                                       Map<String, PlayerAwarePlaceholder> commandTabPlaceholders) {
         this.domainPartsList = new ArrayList<>();
         for (String domain : domains) {
             String[] parts = domain.split("\\.");
             this.domainPartsList.add(parts);
         }
-        this.commandTabPlaceholders.putAll(commandTabPlaceholders);
+        this.commandTabPlaceholders = new HashMap<>(commandTabPlaceholders);
     }
 
-    public List<String> getNextElements(String[] input) {
+    /**
+     * We now accept a CommandSender, which can be cast to Player if needed.
+     */
+    public List<String> getNextElements(CommandSender sender, String[] input) {
         Set<String> nextElements = new HashSet<>();
         boolean inputEndsWithEmpty = input.length > 0 && input[input.length - 1].isEmpty();
         boolean inputIsEmpty = input.length == 0;
@@ -34,8 +42,8 @@ public class DomainTabCompletionResolver {
             processDomains(nextElements, input, inputEndsWithEmpty);
         }
 
-        // Now filter and replace placeholders respecting the current user's input
-        replaceAndFilterPlaceholders(nextElements, input);
+        // Now filter + replace placeholders, respecting the sender
+        replaceAndFilterPlaceholders(sender, nextElements, input);
 
         return new ArrayList<>(nextElements);
     }
@@ -106,39 +114,38 @@ public class DomainTabCompletionResolver {
     }
 
     /**
-     * Replace placeholders in nextElements with the supplier results, filtered by the current user input.
-     * For example, if the placeholder is $ONLINEPLAYERS and the user typed "test.add.a", we only show players
-     * starting with "a".
+     * Replace placeholders in nextElements with the supplier results, filtered by the
+     * current user input. Now uses PlayerAwarePlaceholder's getSuggestions(sender).
      */
-    private void replaceAndFilterPlaceholders(Set<String> nextElements, String[] args) {
-        // Determine the current user input at this domain part (if any)
+    private void replaceAndFilterPlaceholders(CommandSender sender,
+                                              Set<String> nextElements,
+                                              String[] args) {
+        // Determine the current user input
         String userInput = (args.length > 0) ? args[args.length - 1] : "";
 
-        // For each placeholder found in nextElements, replace it with filtered results
+        // Copy to avoid ConcurrentModification
         for (String placeholder : new HashSet<>(nextElements)) {
             if (isWildcard(placeholder)) {
-                // If we have a supplier for this placeholder, use it
-                if (commandTabPlaceholders.containsKey(placeholder)) {
-                    List<String> allResults = commandTabPlaceholders.get(placeholder).get();
-
-                    // Filter based on user's partial input
+                // If we have a placeholder for this wildcard, use it
+                PlayerAwarePlaceholder pap = commandTabPlaceholders.get(placeholder);
+                if (pap != null) {
+                    List<String> allResults = pap.getSuggestions(sender);
+                    // Filter them based on user input
                     List<String> filteredResults = new ArrayList<>();
                     for (String result : allResults) {
-                        if (result.startsWith(userInput)) {
+                        if (result.toLowerCase().startsWith(userInput.toLowerCase())) {
                             filteredResults.add(result);
                         }
                     }
-
-                    // Replace the placeholder in nextElements
                     nextElements.remove(placeholder);
                     nextElements.addAll(filteredResults);
                 } else {
                     // No placeholder found in commandTabPlaceholders
-                    // Use the string after the wildcard character ($ or %)
-                    String fallback = placeholder.substring(1); // remove the leading $ or %
+                    // Use the text after the wildcard character
+                    String fallback = placeholder.substring(1); // remove $ or %
                     nextElements.remove(placeholder);
 
-                    // Only add it if it matches the user input (if any)
+                    // Only add it if it matches the user input
                     if (fallback.startsWith(userInput)) {
                         nextElements.add(fallback);
                     }
@@ -147,4 +154,3 @@ public class DomainTabCompletionResolver {
         }
     }
 }
-
