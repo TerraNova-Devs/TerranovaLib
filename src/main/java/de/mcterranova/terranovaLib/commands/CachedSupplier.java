@@ -1,4 +1,4 @@
-package de.mcterranova.terranovaLib.optimization;
+package de.mcterranova.terranovaLib.commands;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
