@@ -51,6 +51,11 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
         this.commandTabPlaceholders.put(key, PlayerAwarePlaceholder.ofPlayerFunction(replacements));
     }
 
+    // NEW method for directly passing a PlayerAwarePlaceholder
+    public void addPlaceholder(String key, PlayerAwarePlaceholder placeholder) {
+        this.commandTabPlaceholders.put(key, placeholder);
+    }
+
     protected void setupHelpCommand() {
         if (!commandMethods.containsKey("help")) {
             try {
