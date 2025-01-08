@@ -80,9 +80,9 @@ public abstract class RoseGUI implements InventoryHolder {
     }
 
     public void fillEmptyWithItem(List<ItemStack> icons) {
-        List<RoseItem> roseitems = icons.stream().map(icon -> new RoseItem.Builder().copyStack(icon).build()).toList();
+        List<RoseItem> roseItems = icons.stream().map(icon -> new RoseItem.Builder().copyStack(icon).build()).toList();
         int v = 0;
-        for(RoseItem icon : roseitems) {
+        for(RoseItem icon : roseItems) {
             if (this.registeredIcons.get(v) != null)
                 continue;
             this.registeredIcons.put(v, icon);
