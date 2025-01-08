@@ -69,25 +69,23 @@ public abstract class RoseGUI implements InventoryHolder {
     }
 
     public void fillEmptyWithRose(List<RoseItem> icons) {
-        int v = 0;
-        for(RoseItem icon : icons) {
-            if (this.registeredIcons.get(v) != null)
+        for(int i = 0; !icons.isEmpty(); i++) {
+            if (this.registeredIcons.get(i) != null)
                 continue;
-            this.registeredIcons.put(v, icon);
-            this.inventory.setItem(v, (icon == null ? null : icon.stack));
-            v += 1;
+            this.registeredIcons.put(i, icons.getFirst());
+            this.inventory.setItem(i, (icons.getFirst() == null ? null : icons.getFirst().stack));
+            icons.removeFirst();
         }
     }
 
     public void fillEmptyWithItem(List<ItemStack> icons) {
         List<RoseItem> roseItems = icons.stream().map(icon -> new RoseItem.Builder().copyStack(icon).build()).toList();
-        int v = 0;
-        for(RoseItem icon : roseItems) {
-            if (this.registeredIcons.get(v) != null)
+        for(int i = 0; !icons.isEmpty(); i++) {
+            if (this.registeredIcons.get(i) != null)
                 continue;
-            this.registeredIcons.put(v, icon);
-            this.inventory.setItem(v, (icon == null ? null : icon.stack));
-            v += 1;
+            this.registeredIcons.put(i, roseItems.getFirst());
+            this.inventory.setItem(i, (roseItems.getFirst() == null ? null : roseItems.getFirst().stack));
+            icons.removeFirst();
         }
     }
 
