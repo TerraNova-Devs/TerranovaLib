@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnegative;
@@ -14,6 +15,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.bukkit.Bukkit.createInventory;
 
@@ -37,7 +39,6 @@ public abstract class RoseGUI implements InventoryHolder {
         this.title = LegacyComponentSerializer.builder().hexColors().useUnusualXRepeatedCharacterHexFormat().build().serialize(title);
         this.id = id;
         this.inventoryType = InventoryType.CHEST;
-
     }
 
     public void open() {
@@ -65,6 +66,29 @@ public abstract class RoseGUI implements InventoryHolder {
 
         this.registeredIcons.put(slot, icon);
         this.inventory.setItem(slot, (icon == null ? null : icon.stack));
+    }
+
+    public void fillEmptyWithRose(List<RoseItem> icons) {
+        int v = 0;
+        for(RoseItem icon : icons) {
+            if (this.registeredIcons.get(v) != null)
+                continue;
+            this.registeredIcons.put(v, icon);
+            this.inventory.setItem(v, (icon == null ? null : icon.stack));
+            v += 1;
+        }
+    }
+
+    public void fillEmptyWithItem(List<ItemStack> icons) {
+        List<RoseItem> roseitems = icons.stream().map(icon -> new RoseItem.Builder().copyStack(icon).build()).toList();
+        int v = 0;
+        for(RoseItem icon : roseitems) {
+            if (this.registeredIcons.get(v) != null)
+                continue;
+            this.registeredIcons.put(v, icon);
+            this.inventory.setItem(v, (icon == null ? null : icon.stack));
+            v += 1;
+        }
     }
 
     public void addItem(@Nullable RoseItem item, @Nonnull Integer... slots) {
