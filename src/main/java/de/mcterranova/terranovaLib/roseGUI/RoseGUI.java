@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
 import javax.annotation.Nonnegative;
@@ -70,6 +71,28 @@ public abstract class RoseGUI implements InventoryHolder {
     public void addItem(@Nullable RoseItem item, @Nonnull Integer... slots) {
         for (int slot : slots) {
             this.addItem(slot, item);
+        }
+    }
+
+    // make this return the rest of the items
+    public void fillEmptyWithRose(List<RoseItem> icons) {
+        for(int i = 0; !icons.isEmpty() ; i++) {
+            if (i == this.registeredIcons.size()) break;
+            if (this.registeredIcons.get(i) != null) continue;
+            this.registeredIcons.put(i, icons.getFirst());
+            this.inventory.setItem(i, (icons.getFirst() == null ? null : icons.getFirst().stack));
+            icons.removeFirst();
+        }
+    }
+
+    public void fillEmptyWithItem(List<ItemStack> icons) {
+        List<RoseItem> roseItems = icons.stream().map(icon -> new RoseItem.Builder().copyStack(icon).build()).toList();
+        for(int i = 0; !icons.isEmpty(); i++) {
+            if (i == this.registeredIcons.size()) break;
+            if (this.registeredIcons.get(i) != null) continue;
+            this.registeredIcons.put(i, roseItems.getFirst());
+            this.inventory.setItem(i, (roseItems.getFirst() == null ? null : roseItems.getFirst().stack));
+            icons.removeFirst();
         }
     }
 
