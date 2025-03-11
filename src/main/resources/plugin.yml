@@ -1,7 +1,7 @@
 name: TerranovaLib
 version: '1.0.0'
 main: de.mcterranova.terranovaLib.TerranovaLib
-api-version: '1.21'
+api-version: '1.21.4'
 authors: [Bastizeit, gerryxn]
 prefix: TerraNovaLib
 website: mcterranova.de
