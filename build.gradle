@@ -1,15 +1,15 @@
 import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
-    id "io.papermc.paperweight.userdev" version "1.7.2"
-    id("xyz.jpenilla.run-paper") version "2.3.0"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
     id 'maven-publish'
     id 'java'
     id "io.github.goooler.shadow" version "8.1.8"
 }
 
 group = 'de.mcterranova.terranovaLib'
-version = '0.8.13'
+version = '1.0.0'
 description = 'Lib for TerraNova Server.'
 
 java {
@@ -29,24 +29,20 @@ repositories {
         url = "https://repo.papermc.io/repository/maven-public/"
     }
     maven {
-        name = "Oraxen"
-        url = "https://repo.oraxen.com/releases"
-    }
-    maven {
-        name = "Paperweight"
-        url "https://plugins.gradle.org/m2/"
+        name = "Nexo"
+        url = "https://repo.nexomc.com/releases"
     }
 }
 
 paperweight {
-    reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
+    paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.getMOJANG_PRODUCTION()
     // Spigot Mappings
     // reobfArtifactConfiguration = ReobfArtifactConfiguration.getREOBF_PRODUCTION()
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
-    compileOnly("io.th0rgal:oraxen:1.184.0")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+    compileOnly("com.nexomc:nexo:1.1.0")
     implementation("com.influxdb:influxdb-client-java:6.5.0")
 }
 

@@ -2,8 +2,8 @@ package de.mcterranova.terranovaLib.roseGUI;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import com.nexomc.nexo.api.NexoItems;
 import de.mcterranova.terranovaLib.persistentData.terraDataType;
-import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -108,8 +108,8 @@ public class RoseItem {
         JavaPlugin plugin;
 
         public Builder material(String material) {
-            if (OraxenItems.exists(material)) {
-                this.builderStack = OraxenItems.getItemById(material).build();
+            if (NexoItems.exists(material)) {
+                this.builderStack = NexoItems.itemFromId(material).build();
             } else {
                 this.builderStack = new ItemStack(Material.valueOf(material));
             }

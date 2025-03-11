@@ -1,6 +1,6 @@
 package de.mcterranova.terranovaLib.InventoryUtil;
 
-import io.th0rgal.oraxen.api.OraxenItems;
+import com.nexomc.nexo.api.NexoItems;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -69,8 +69,8 @@ public class ItemTransfer {
 
     // Hilfsmethode: Item auflösen
     private static ItemStack resolveItem(String itemString) {
-        if (OraxenItems.exists(itemString)) {
-            return OraxenItems.getItemById(itemString).build();
+        if (NexoItems.exists(itemString)) {
+            return NexoItems.itemFromId(itemString).build();
         } else {
             return new ItemStack(Material.valueOf(itemString));
         }

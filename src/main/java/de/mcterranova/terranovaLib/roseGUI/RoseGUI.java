@@ -48,7 +48,7 @@ public abstract class RoseGUI implements InventoryHolder {
         }
 
         players.put(this.player.getUniqueId(), this);
-        this.inventory = createInventory(null, this.size, this.title);
+        this.inventory = createInventory(null, this.size, Component.text(this.title));
         this.player.openInventory(inventory);
     }
 
