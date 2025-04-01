@@ -1,5 +1,7 @@
 package de.mcterranova.terranovaLib.roseGUI;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.nexomc.nexo.api.NexoItems;
@@ -7,6 +9,7 @@ import de.mcterranova.terranovaLib.persistentData.terraDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -53,23 +56,6 @@ public class RoseItem {
         this.clickAction = event -> {
         };
 
-    }
-
-    private static void mutateSkullMetaSkinBy64(String b64, SkullMeta skullMeta) {
-        try {
-            metaSetProfileMethod = skullMeta.getClass().getDeclaredMethod("setProfile", GameProfile.class);
-            metaSetProfileMethod.setAccessible(true);
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
-        UUID id = new UUID(b64.substring(b64.length() - 20).hashCode(), b64.substring(b64.length() - 10).hashCode());
-        GameProfile profile = new GameProfile(id, "Player");
-        profile.getProperties().put("textures", new Property("textures", b64));
-        try {
-            metaSetProfileMethod.invoke(skullMeta, profile);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Nonnull
@@ -162,9 +148,16 @@ public class RoseItem {
             return this;
         }
 
+
         public Builder setSkull(String texture) {
             this.builderStack = new ItemStack(Material.PLAYER_HEAD);
-            mutateSkullMetaSkinBy64(texture, (SkullMeta) this.builderStack.getItemMeta());
+            builderStack.editMeta(SkullMeta.class, skullMeta -> {
+                final UUID uuid = UUID.randomUUID();
+                final PlayerProfile playerProfile = Bukkit.createProfile(uuid, uuid.toString().substring(0, 16));
+                playerProfile.setProperty(new ProfileProperty("textures", texture));
+
+                skullMeta.setPlayerProfile(playerProfile);
+            });
             return this;
         }
 
