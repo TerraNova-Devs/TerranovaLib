@@ -9,10 +9,13 @@ import de.mcterranova.terranovaLib.persistentData.terraDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.util.Unit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
@@ -55,7 +58,11 @@ public class RoseItem {
         };
         this.clickAction = event -> {
         };
-
+        if (!builder.showTooltip) {
+            net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(stack);
+            nmsItem.set(DataComponents.HIDE_TOOLTIP, Unit.INSTANCE);
+            this.stack = CraftItemStack.asBukkitCopy(nmsItem);
+        }
     }
 
     @Nonnull
@@ -92,6 +99,7 @@ public class RoseItem {
         List<Component> lore = new ArrayList<>();
         boolean isEnchanted;
         JavaPlugin plugin;
+        boolean showTooltip = true;
 
         public Builder material(String material) {
             if (NexoItems.exists(material)) {
@@ -140,6 +148,11 @@ public class RoseItem {
         public Builder addLore(String... lore) {
             for (String text : lore)
                 this.lore.add(MiniMessage.miniMessage().deserialize(text).decoration(TextDecoration.ITALIC, false));
+            return this;
+        }
+
+        public Builder showTooltip(boolean showTooltip) {
+            this.showTooltip = showTooltip;
             return this;
         }
 
