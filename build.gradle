@@ -127,7 +127,7 @@ publishing {
 
 shadowJar {
     relocate 'com.influxdb', 'de.mcterranova.terranovaLib.shaded.influx'
-    destinationDirectory.set(file("./build/libs"))
+    destinationDirectory.set(file("../Nations/testserver/plugins"))
     archiveClassifier.set('all')
 }
 
