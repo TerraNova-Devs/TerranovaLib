@@ -2,6 +2,8 @@ package de.mcterranova.terranovaLib;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.InfluxDBClientFactory;
+import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,6 +22,8 @@ public final class TerranovaLib extends JavaPlugin {
         String bucket = config.getString("influxdb.bucket");
 
         influxDBClient = InfluxDBClientFactory.create(url, token.toCharArray(), org, bucket);
+
+        Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
     }
 
     @Override
