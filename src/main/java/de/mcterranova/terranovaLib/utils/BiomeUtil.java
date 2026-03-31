@@ -27,7 +27,7 @@ public class BiomeUtil {
         ResourceKey<Biome> biomeKey = nmsWorld.getBiome(blockPos).unwrapKey().orElse(null);
 
         if (biomeKey != null) {
-            String fullBiomeName = biomeKey.location().toString();
+            String fullBiomeName = biomeKey.registry().toString();
             return biomeNames.stream().anyMatch(biomeName -> biomeName.equalsIgnoreCase(fullBiomeName));
         }
         return false;

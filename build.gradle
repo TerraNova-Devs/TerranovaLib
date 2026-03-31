@@ -1,11 +1,11 @@
 import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id 'maven-publish'
     id 'java'
-    id "io.github.goooler.shadow" version "8.1.8"
+    id "com.gradleup.shadow" version "9.0.0"
 }
 
 group = 'de.mcterranova.terranovaLib'
@@ -14,11 +14,11 @@ description = 'Lib for TerraNova Server.'
 
 java {
     // Configure the Java toolchain to use Java 21
-    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
 
     // Set source and target compatibility
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {
@@ -41,16 +41,15 @@ paperweight {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
-    compileOnly("com.nexomc:nexo:1.1.0")
-    implementation("com.influxdb:influxdb-client-java:6.5.0")
+    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+    compileOnly("com.nexomc:nexo:1.21.0")
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 
     if (JavaVersion.current().isJava10Compatible()) {
-        options.release.set(21)
+        options.release.set(25)
     }
 }
 

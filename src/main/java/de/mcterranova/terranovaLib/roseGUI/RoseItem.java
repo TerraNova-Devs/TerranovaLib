@@ -47,6 +47,7 @@ public class RoseItem {
         if (builder.displayname != null) meta.displayName(builder.displayname);
         if (builder.lore != null) meta.lore(builder.lore);
         if (builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
+        if(!builder.showTooltip) meta.setHideTooltip(true);
         if (builder.plugin != null) {
             NamespacedKey key = new NamespacedKey(builder.plugin, "uuid");
             this.uuid = UUID.randomUUID();
@@ -58,11 +59,6 @@ public class RoseItem {
         };
         this.clickAction = event -> {
         };
-        if (!builder.showTooltip) {
-            net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(stack);
-            nmsItem.set(DataComponents.HIDE_TOOLTIP, Unit.INSTANCE);
-            this.stack = CraftItemStack.asBukkitCopy(nmsItem);
-        }
     }
 
     @Nonnull
