@@ -2,17 +2,19 @@ package de.mcterranova.terranovaLib.InventoryUtil;
 
 import com.nexomc.nexo.api.NexoItems;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 public class ItemTransfer {
 
+    private static final NamespacedKey ITEM_ID_KEY = new NamespacedKey("nexo", "id");
+
     public static Integer charge(Player player, String itemString, int amount, boolean onlyFullCharge) {
-        ItemStack item = resolveItem(itemString);
         ItemStack[] inventory = player.getInventory().getContents();
 
-        // Berechnung des Gesamtlagerbestands, falls nur vollständige Abbuchung erlaubt ist
-        if (onlyFullCharge && countTotalItems(inventory, item) < amount) {
+        if (onlyFullCharge && countTotalItems(inventory, itemString) < amount) {
             return -1;
         }
 
@@ -20,9 +22,11 @@ public class ItemTransfer {
 
         for (int i = 0; i < inventory.length && remaining > 0; i++) {
             ItemStack stack = inventory[i];
-            if (stack == null || !stack.isSimilar(item)) continue;
+
+            if (!hasItemId(stack, itemString)) continue;
 
             int stackAmount = stack.getAmount();
+
             if (stackAmount <= remaining) {
                 inventory[i] = null;
                 remaining -= stackAmount;
@@ -34,6 +38,7 @@ public class ItemTransfer {
 
         player.getInventory().setContents(inventory);
         player.updateInventory();
+
         return amount - remaining;
     }
 
@@ -41,7 +46,6 @@ public class ItemTransfer {
         ItemStack item = resolveItem(itemString);
         ItemStack[] inventory = player.getInventory().getContents();
 
-        // Berechnung des maximal verfügbaren Platzes
         if (onlyFullCredit && countAvailableSpace(inventory, item) < amount) {
             return -1;
         }
@@ -52,11 +56,11 @@ public class ItemTransfer {
             ItemStack stack = inventory[i];
 
             if (stack == null) {
-                int addable = Math.min(remaining, 64);
+                int addable = Math.min(remaining, item.getMaxStackSize());
                 inventory[i] = item.asQuantity(addable);
                 remaining -= addable;
             } else if (stack.isSimilar(item)) {
-                int addable = Math.min(remaining, 64 - stack.getAmount());
+                int addable = Math.min(remaining, stack.getMaxStackSize() - stack.getAmount());
                 stack.setAmount(stack.getAmount() + addable);
                 remaining -= addable;
             }
@@ -64,40 +68,52 @@ public class ItemTransfer {
 
         player.getInventory().setContents(inventory);
         player.updateInventory();
+
         return amount - remaining;
     }
 
-    // Hilfsmethode: Item auflösen
     private static ItemStack resolveItem(String itemString) {
         if (NexoItems.exists(itemString)) {
             return NexoItems.itemFromId(itemString).build();
-        } else {
-            return new ItemStack(Material.valueOf(itemString));
         }
+
+        return new ItemStack(Material.valueOf(itemString));
     }
 
-    // Hilfsmethode: Gesamte Menge eines Items im Inventar zählen
-    private static int countTotalItems(ItemStack[] inventory, ItemStack item) {
+    private static boolean hasItemId(ItemStack stack, String expectedId) {
+        if (stack == null || stack.getType().isAir()) return false;
+
+        String actualId = stack.getPersistentDataContainer().get(
+                ITEM_ID_KEY,
+                PersistentDataType.STRING
+        );
+
+        return expectedId.equals(actualId);
+    }
+
+    private static int countTotalItems(ItemStack[] inventory, String itemString) {
         int total = 0;
+
         for (ItemStack stack : inventory) {
-            if (stack != null && stack.isSimilar(item)) {
+            if (hasItemId(stack, itemString)) {
                 total += stack.getAmount();
             }
         }
+
         return total;
     }
 
-    // Hilfsmethode: Verfügbaren Platz für ein Item im Inventar zählen
     private static int countAvailableSpace(ItemStack[] inventory, ItemStack item) {
         int totalSpace = 0;
+
         for (ItemStack stack : inventory) {
             if (stack == null) {
-                totalSpace += 64;
+                totalSpace += item.getMaxStackSize();
             } else if (stack.isSimilar(item)) {
-                totalSpace += 64 - stack.getAmount();
+                totalSpace += stack.getMaxStackSize() - stack.getAmount();
             }
         }
+
         return totalSpace;
     }
-
 }
