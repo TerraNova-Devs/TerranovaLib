@@ -1,7 +1,7 @@
 import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.23"
     id("xyz.jpenilla.run-paper") version "2.3.1"
     id 'maven-publish'
     id 'java'
@@ -12,8 +12,13 @@ group = 'de.mcterranova.terranovaLib'
 version = '1.0.1'
 description = 'Lib for TerraNova Server.'
 
+ext {
+    minecraftVersion = '26.2'
+    nexoVersion = '1.27.0'
+}
+
 java {
-    // Configure the Java toolchain to use Java 21
+    // Configure the Java toolchain to use Java 25
     toolchain.languageVersion = JavaLanguageVersion.of(25)
 
     // Set source and target compatibility
@@ -41,8 +46,8 @@ paperweight {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
-    compileOnly("com.nexomc:nexo:1.21.0")
+    paperweight.paperDevBundle("${minecraftVersion}.build.+")
+    compileOnly("com.nexomc:nexo:${nexoVersion}")
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -54,12 +59,19 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [
+            version         : version,
+            minecraftVersion: minecraftVersion
+    ]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+tasks.named("runServer") {
+    minecraftVersion(project.ext.minecraftVersion)
 }
 
 // Task to generate sources JAR
