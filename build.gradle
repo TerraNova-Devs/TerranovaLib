@@ -37,6 +37,15 @@ repositories {
         name = "Nexo"
         url = "https://repo.nexomc.com/releases"
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "JitPack"
+                url = "https://jitpack.io"
+            }
+        }
+        filter { includeGroup "com.github.NuVotifier.NuVotifier" }
+    }
 }
 
 paperweight {
@@ -48,6 +57,9 @@ paperweight {
 dependencies {
     paperweight.paperDevBundle("${minecraftVersion}.build.+")
     compileOnly("com.nexomc:nexo:${nexoVersion}")
+    // NuVotifier is only a soft dependency; without it VoteEvent is never fired
+    compileOnly("com.github.NuVotifier.NuVotifier:nuvotifier-api:2.7.2")
+    compileOnly("com.github.NuVotifier.NuVotifier:nuvotifier-bukkit:2.7.2")
 }
 
 tasks.withType(JavaCompile).configureEach {
