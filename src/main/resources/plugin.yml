@@ -6,3 +6,4 @@ authors: [Bastizeit, gerryxn]
 prefix: TerraNovaLib
 website: mcterranova.de
 description: Lib for TerraNova Server.
+softdepend: [Votifier]
