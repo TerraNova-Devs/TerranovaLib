@@ -1,0 +1,37 @@
+# One file per group; the file name is the group id (a-z, 0-9, _ and -).
+# A group is a set of blocks that only some players see. The real world is not
+# changed: each player's client is told about the group's blocks, so one player
+# can see a bridge that another does not.
+#
+# Quests switch groups per player with the BetonQuest action
+#   ghostblock show example
+#   ghostblock hide example
+# and check them with the condition
+#   ghostblock example
+# Visibility is stored with the player and survives restarts.
+#
+# The blocks are only drawn. The server still has the real blocks, so players
+# cannot stand on a ghost floor (the server sees air and anti-cheat may flag it)
+# and cannot walk through a block hidden by a ghost air block (the server pulls
+# them back). Use groups for scenery, not for paths.
+#
+# Instead of writing this by hand, build the blocks, then
+#   /ghostblocks capture <group> <x1> <y1> <z1> <x2> <y2> <z2>
+# and remove the real ones again.
+
+world: world
+
+# Whether players see the group before any quest has shown or hidden it.
+default-visible: false
+
+# "x y z block". The block is any block state, as in /setblock; "minecraft:air"
+# makes a real block disappear.
+blocks: []
+#  - "100 64 200 minecraft:oak_planks"
+#  - "101 64 200 minecraft:oak_stairs[facing=east]"
+
+# Optional boxes of one block type.
+fills: []
+#  - from: "100 63 200"
+#    to: "104 63 202"
+#    block: "minecraft:spruce_planks"
