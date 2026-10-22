@@ -10,4 +10,6 @@ vote:
     - "<gold><b>Vote für TerraNova!</b> <gray>Jeder Vote bringt dir 5 Freifahrten für die Schiffe, gültig bis Mitternacht."
     - "<gray>Einmal am Tag je Seite, ab Mitternacht wieder."
     - "<click:open_url:'https://minecraft-server.eu/vote/index/23441'><hover:show_text:'<gray>Zur Vote-Seite'><white>» <u>minecraft-server.eu</u></hover></click>"
+  # sent once a day 20 minutes after joining to players who have not voted today, only on the server with NuVotifier
+  reminder: "<gold>Du hast heute noch nicht gevotet! <gray>Jeder Vote bringt dir 5 Freifahrten, die Links gibt es mit <click:run_command:'/vote'><hover:show_text:'<gray>/vote ausführen'><white><u>/vote</u></hover></click><gray>."
 
