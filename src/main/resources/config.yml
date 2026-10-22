@@ -13,3 +13,10 @@ vote:
   # sent once a day 20 minutes after joining to players who have not voted today, only on the server with NuVotifier
   reminder: "<gold>Du hast heute noch nicht gevotet! <gray>Jeder Vote bringt dir 5 Freifahrten, die Links gibt es mit <click:run_command:'/vote'><hover:show_text:'<gray>/vote ausführen'><white><u>/vote</u></hover></click><gray>."
 
+# Citizens NPCs defined in plugins/TerranovaLib/npcs/*.yml ("tnpc <id>" in BetonQuest), only with Citizens
+npcs:
+  # Destroy managed NPCs (with terranova-id) whose definition has been deleted. Skipped automatically
+  # whenever a definition file fails to load or no definition is found, so neither a typo nor a
+  # missing folder can wipe NPCs. NPCs placed by hand are never touched.
+  remove-orphans: true
+

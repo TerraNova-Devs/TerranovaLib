@@ -1,0 +1,26 @@
+# One entry per NPC. The key is the NPC's permanent id: BetonQuest refers to it as
+#   npcs:
+#     rotbart: "tnpc rotbart"
+# Ids use a-z, 0-9, _ and -. Renaming an id creates a new NPC.
+#
+# rotbart:
+#   # Shown name, written as for Citizens' /npc rename.
+#   name: "<red>Rotbart"
+#   # Any living entity type. Default PLAYER.
+#   type: PLAYER
+#   # BetonQuest's location format: x;y;z;world;yaw;pitch (yaw and pitch optional).
+#   location: "100.5;64;200.5;world;90;0"
+#   skin:
+#     # Either the name of a Minecraft account ...
+#     name: Notch
+#     # ... or a fixed texture (value and signature, e.g. from mineskin.org).
+#     # texture: "ewogICJ0aW1l..."
+#     # signature: "Kq4z..."
+#   # Turn the head towards nearby players. Default true.
+#   look-close: true
+#   # Invulnerable. Default true.
+#   protected: true
+#   # Optional: Citizens UUID of an NPC that already exists (e.g. on Prod). Where
+#   # it exists, it is taken over instead of creating a second one; elsewhere a
+#   # new NPC is created. /npc info shows the UUID.
+#   replaces: e8cfe600-1ef7-450f-959c-19578ef3a3eb
