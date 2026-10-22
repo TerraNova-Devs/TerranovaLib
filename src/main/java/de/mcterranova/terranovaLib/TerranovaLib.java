@@ -1,6 +1,7 @@
 package de.mcterranova.terranovaLib;
 
 import de.mcterranova.terranovaLib.ghostblocks.GhostBlocks;
+import de.mcterranova.terranovaLib.npcs.Npcs;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.vote.VoteListener;
@@ -42,6 +43,15 @@ public final class TerranovaLib extends JavaPlugin {
             GhostBlocks.enable(this);
         } catch (Exception | LinkageError e) {
             getLogger().log(Level.SEVERE, "Ghost blocks stay off", e);
+        }
+
+        // NPCs defined as code; Npcs names the classes of Citizens, so only with Citizens
+        if (Bukkit.getPluginManager().isPluginEnabled("Citizens")) {
+            try {
+                Npcs.enable(this);
+            } catch (Exception | LinkageError e) {
+                getLogger().log(Level.SEVERE, "NPCs stay off", e);
+            }
         }
     }
 
