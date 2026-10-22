@@ -7,3 +7,8 @@ prefix: TerraNovaLib
 website: mcterranova.de
 description: Lib for TerraNova Server.
 softdepend: [Votifier]
+commands:
+  vote:
+    description: Shows the links to vote for the server.
+    usage: /vote
+    aliases: [voten]
