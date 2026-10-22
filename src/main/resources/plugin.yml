@@ -6,9 +6,13 @@ authors: [Bastizeit, gerryxn]
 prefix: TerraNovaLib
 website: mcterranova.de
 description: Lib for TerraNova Server.
-softdepend: [Votifier]
+softdepend: [Votifier, BetonQuest]
 commands:
   vote:
     description: Shows the links to vote for the server.
     usage: /vote
     aliases: [voten]
+permissions:
+  ghostblocks.admin:
+    description: Allows /ghostblocks.
+    default: op

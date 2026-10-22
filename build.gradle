@@ -46,6 +46,17 @@ repositories {
         }
         filter { includeGroup "com.github.NuVotifier.NuVotifier" }
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "BetonQuest"
+                url = "https://repo.betonquest.org/betonquest/"
+                // only the plugin jar is needed; its POMs pull in a chain of parent POMs
+                metadataSources { artifact() }
+            }
+        }
+        filter { includeGroup "org.betonquest" }
+    }
 }
 
 paperweight {
@@ -60,6 +71,17 @@ dependencies {
     // NuVotifier is only a soft dependency; without it VoteEvent is never fired
     compileOnly("com.github.NuVotifier.NuVotifier:nuvotifier-api:2.7.2")
     compileOnly("com.github.NuVotifier.NuVotifier:nuvotifier-bukkit:2.7.2")
+    // BetonQuest is only a soft dependency of the ghost blocks. This snapshot is the plugin jar of
+    // 3.3.0-DEV-52, the build the servers run; the ghost blocks use only its public API.
+    // ponytail: snapshots may be cleaned from the repo, then pin the next DEV build the servers run
+    compileOnly("org.betonquest:betonquest:3.3.0-20261014.114053-50:shaded") { transitive = false }
+    testImplementation platform('org.junit:junit-bom:6.1.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 tasks.withType(JavaCompile).configureEach {

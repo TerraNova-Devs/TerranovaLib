@@ -1,5 +1,6 @@
 package de.mcterranova.terranovaLib;
 
+import de.mcterranova.terranovaLib.ghostblocks.GhostBlocks;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.vote.VoteListener;
@@ -9,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
+import java.util.logging.Level;
 
 public final class TerranovaLib extends JavaPlugin {
 
@@ -33,6 +35,14 @@ public final class TerranovaLib extends JavaPlugin {
             getConfig().getStringList("vote.message").forEach(line -> sender.sendMessage(Chat.stringToComponent(line)));
             return true;
         });
+
+        // blocks only some players see, switched by quests; a failure here must not take down the lib
+        // and with it every plugin that depends on it
+        try {
+            GhostBlocks.enable(this);
+        } catch (Exception | LinkageError e) {
+            getLogger().log(Level.SEVERE, "Ghost blocks stay off", e);
+        }
     }
 
     @Override
