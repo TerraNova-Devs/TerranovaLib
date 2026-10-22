@@ -3,6 +3,7 @@ package de.mcterranova.terranovaLib;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.vote.VoteListener;
+import de.mcterranova.terranovaLib.vote.VoteReminder;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,9 +21,11 @@ public final class TerranovaLib extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
 
-        // VoteListener names the classes of NuVotifier, so only with NuVotifier
+        // VoteListener names the classes of NuVotifier, so only with NuVotifier;
+        // the reminder only where the votes arrive, elsewhere it would not know who voted
         if (Bukkit.getPluginManager().isPluginEnabled("Votifier")) {
             Bukkit.getPluginManager().registerEvents(new VoteListener(getLogger()), this);
+            Bukkit.getPluginManager().registerEvents(new VoteReminder(this), this);
         }
 
         // /vote shows the lines of vote.message from the config, for everyone
