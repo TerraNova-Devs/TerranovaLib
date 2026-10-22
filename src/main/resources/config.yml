@@ -4,3 +4,10 @@ influxdb:
   org: "Terranova"
   bucket: "silverDB"
 
+vote:
+  # what /vote shows, one MiniMessage line each; <click:open_url:'...'> makes a link clickable
+  message:
+    - "<gold><b>Vote für TerraNova!</b> <gray>Jeder Vote bringt dir 5 Freifahrten für die Schiffe, gültig bis Mitternacht."
+    - "<gray>Einmal am Tag je Seite, ab Mitternacht wieder."
+    - "<click:open_url:'https://minecraft-server.eu/vote/index/23441'><hover:show_text:'<gray>Zur Vote-Seite'><white>» <u>minecraft-server.eu</u></hover></click>"
+
