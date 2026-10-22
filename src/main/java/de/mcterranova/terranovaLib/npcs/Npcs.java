@@ -1,6 +1,6 @@
 package de.mcterranova.terranovaLib.npcs;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import de.mcterranova.terranovaLib.utils.PluginHooks;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -11,13 +11,13 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.trait.MobType;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.trait.SkinTrait;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -60,9 +60,12 @@ public final class Npcs implements Listener {
         if (!feature.definitionFolder.exists()) {
             plugin.saveResource("npcs/example.yml", false);
         }
-        if (Bukkit.getPluginManager().isPluginEnabled("BetonQuest") && BetonQuestHook.register(plugin, feature.npcs)) {
-            plugin.getLogger().info("BetonQuest NPC type '" + BetonQuestHook.TYPE + "' registered.");
-        }
+        // BetonQuest may enable after the lib; it takes integrations until all plugins are enabled
+        PluginHooks.whenEnabled(plugin, "BetonQuest", () -> {
+            if (BetonQuestHook.register(plugin, feature.npcs)) {
+                plugin.getLogger().info("BetonQuest NPC type '" + BetonQuestHook.TYPE + "' registered.");
+            }
+        });
         plugin.getServer().getPluginManager().registerEvents(feature, plugin);
         plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event ->
                 event.registrar().register("tnpc", "Manages NPCs defined in TerranovaLib/npcs.", List.of(),

@@ -1,5 +1,6 @@
 package de.mcterranova.terranovaLib.ghostblocks;
 
+import de.mcterranova.terranovaLib.utils.PluginHooks;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -51,9 +52,12 @@ public final class GhostBlocks {
         }
         feature.loadGroups(null);
         plugin.getServer().getPluginManager().registerEvents(feature.service, plugin);
-        if (Bukkit.getPluginManager().isPluginEnabled("BetonQuest") && BetonQuestHook.register(plugin, feature.service)) {
-            plugin.getLogger().info("BetonQuest action and condition '" + BetonQuestHook.NAME + "' registered.");
-        }
+        // BetonQuest may enable after the lib; it takes integrations until all plugins are enabled
+        PluginHooks.whenEnabled(plugin, "BetonQuest", () -> {
+            if (BetonQuestHook.register(plugin, feature.service)) {
+                plugin.getLogger().info("BetonQuest action and condition '" + BetonQuestHook.NAME + "' registered.");
+            }
+        });
         plugin.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event ->
                 event.registrar().register("ghostblocks", "Manages ghost block groups.", List.of(),
                         feature.new GhostCommand()));
