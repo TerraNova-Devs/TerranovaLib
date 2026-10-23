@@ -95,8 +95,12 @@ pin with the NPC's name at its stored spot, with its face if it has a player ski
 - **Head:** the texture hash (`SkinHash`, the part of `textures.SKIN.url` after
   `/texture/`) from the skin trait, else from the profile of the spawned NPC.
   Only `textures.minecraft.net`, never a URL; HeroicMap fetches the skin itself.
+- **Name:** as plain text (`MapName`): MiniMessage tags and colour codes
+  stripped, cut to the 64 characters of a pin.
 - **Left out:** NPCs without a name or stored spot, with the name tag switched
   off, or despawned on purpose. Mob NPCs get a plain pin.
+- **Rejected:** a pin HeroicMap rejects is tried once more without its head,
+  else left out, one log line per pin; the other NPCs still go up.
 - **Limits of HeroicMap:** 1000 pins and 256 different heads per layer; above
   that, one log line, and the rest stay off or get a plain pin.
 - Without HeroicMap or Citizens the layer stays off. When the lib is disabled,
