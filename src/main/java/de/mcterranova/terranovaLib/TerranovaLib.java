@@ -1,10 +1,12 @@
 package de.mcterranova.terranovaLib;
 
+import de.mcterranova.terranovaLib.crops.RicePlanting;
 import de.mcterranova.terranovaLib.ghostblocks.GhostBlocks;
 import de.mcterranova.terranovaLib.npcs.NpcMapLayer;
 import de.mcterranova.terranovaLib.npcs.Npcs;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.mcterranova.terranovaLib.utils.PluginHooks;
 import de.mcterranova.terranovaLib.vote.VoteListener;
 import de.mcterranova.terranovaLib.vote.VoteReminder;
 import org.bukkit.Bukkit;
@@ -62,6 +64,9 @@ public final class TerranovaLib extends JavaPlugin {
                 }
             }
         }
+
+        // rice only in shallow water; RicePlanting names an event of Nexo, which loads after the lib (BountyfulSeas)
+        PluginHooks.whenEnabled(this, "Nexo", () -> Bukkit.getPluginManager().registerEvents(new RicePlanting(), this));
     }
 
     @Override
