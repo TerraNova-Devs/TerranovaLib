@@ -9,7 +9,7 @@ description: Lib for TerraNova Server.
 # Not BetonQuest: the lib has to load before Nexo (BountyfulSeas) and BetonQuest loads after Nexo.
 # Ghost blocks and NPCs hook into BetonQuest when it enables (PluginHooks). Paper then warns once
 # that the lib loaded a class from BetonQuest without depending on it; that is expected.
-softdepend: [Votifier, Citizens]
+softdepend: [Votifier, Citizens, HeroicMap]
 commands:
   vote:
     description: Shows the links to vote for the server.

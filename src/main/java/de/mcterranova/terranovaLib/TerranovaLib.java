@@ -1,6 +1,7 @@
 package de.mcterranova.terranovaLib;
 
 import de.mcterranova.terranovaLib.ghostblocks.GhostBlocks;
+import de.mcterranova.terranovaLib.npcs.NpcMapLayer;
 import de.mcterranova.terranovaLib.npcs.Npcs;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.Chat;
@@ -51,6 +52,14 @@ public final class TerranovaLib extends JavaPlugin {
                 Npcs.enable(this);
             } catch (Exception | LinkageError e) {
                 getLogger().log(Level.SEVERE, "NPCs stay off", e);
+            }
+            // NpcMapLayer names the classes of HeroicMap, so only with HeroicMap
+            if (Bukkit.getPluginManager().isPluginEnabled("HeroicMap")) {
+                try {
+                    NpcMapLayer.enable(this);
+                } catch (Exception | LinkageError e) {
+                    getLogger().log(Level.SEVERE, "NPC map layer stays off", e);
+                }
             }
         }
     }
