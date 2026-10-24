@@ -44,7 +44,10 @@ repositories {
                 url = "https://jitpack.io"
             }
         }
-        filter { includeGroup "com.github.NuVotifier.NuVotifier" }
+        filter {
+            includeGroup "com.github.NuVotifier.NuVotifier"
+            includeGroup "com.github.VonNekyia"
+        }
     }
     exclusiveContent {
         forRepository {
@@ -86,6 +89,11 @@ dependencies {
     compileOnly("org.betonquest:betonquest:3.3.0-20261014.114053-50:shaded") { transitive = false }
     // Citizens for the NPCs, soft dependency; its traits are in the main jar, not the API
     compileOnly("net.citizensnpcs:citizens-main:2.0.44-SNAPSHOT") { transitive = false }
+    // HeroicMap for the NPC layer on the web map, soft dependency; heads on pins need 0.17.0
+    compileOnly("com.github.VonNekyia:heroic-map-renderer-plugin:v0.17.0")
+    // NpcMapLayerTest needs the API of HeroicMap and the Citizens classes NpcMapLayer names
+    testImplementation("com.github.VonNekyia:heroic-map-renderer-plugin:v0.17.0")
+    testImplementation("net.citizensnpcs:citizens-main:2.0.44-SNAPSHOT") { transitive = false }
     testImplementation platform('org.junit:junit-bom:6.1.3')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
