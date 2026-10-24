@@ -2,20 +2,15 @@ package de.mcterranova.terranovaLib.roseGUI;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import com.nexomc.nexo.api.NexoItems;
 import de.mcterranova.terranovaLib.persistentData.terraDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.util.Unit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +21,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +41,7 @@ public class RoseItem {
         if (builder.displayname != null) meta.displayName(builder.displayname);
         if (builder.lore != null) meta.lore(builder.lore);
         if (builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
+        if(!builder.showTooltip) meta.setHideTooltip(true);
         if (builder.plugin != null) {
             NamespacedKey key = new NamespacedKey(builder.plugin, "uuid");
             this.uuid = UUID.randomUUID();
@@ -58,11 +53,6 @@ public class RoseItem {
         };
         this.clickAction = event -> {
         };
-        if (!builder.showTooltip) {
-            net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(stack);
-            nmsItem.set(DataComponents.HIDE_TOOLTIP, Unit.INSTANCE);
-            this.stack = CraftItemStack.asBukkitCopy(nmsItem);
-        }
     }
 
     @Nonnull
