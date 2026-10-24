@@ -66,7 +66,7 @@ public final class TerranovaLib extends JavaPlugin {
         }
 
         // rice only in shallow water; RicePlanting names an event of Nexo, which loads after the lib (BountyfulSeas)
-        PluginHooks.whenEnabled(this, "Nexo", () -> Bukkit.getPluginManager().registerEvents(new RicePlanting(), this));
+        PluginHooks.whenEnabled(this, "Nexo", () -> Bukkit.getPluginManager().registerEvents(new RicePlanting(this), this));
     }
 
     @Override
