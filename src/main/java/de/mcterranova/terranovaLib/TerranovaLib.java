@@ -1,6 +1,7 @@
 package de.mcterranova.terranovaLib;
 
 import de.mcterranova.terranovaLib.crops.RicePlanting;
+import de.mcterranova.terranovaLib.dialoguehud.DialogueHud;
 import de.mcterranova.terranovaLib.ghostblocks.GhostBlocks;
 import de.mcterranova.terranovaLib.npcs.NpcMapLayer;
 import de.mcterranova.terranovaLib.npcs.Npcs;
@@ -17,6 +18,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 
 public final class TerranovaLib extends JavaPlugin {
+
+    private DialogueHud hud;
 
     @Override
     public void onEnable() {
@@ -67,10 +70,23 @@ public final class TerranovaLib extends JavaPlugin {
 
         // rice only in shallow water; RicePlanting names an event of Nexo, which loads after the lib (BountyfulSeas)
         PluginHooks.whenEnabled(this, "Nexo", () -> Bukkit.getPluginManager().registerEvents(new RicePlanting(this), this));
+
+        // BetonQuest conversations above the hotbar; DialogueHud names the classes of BetonQuest, so
+        // only where BetonQuest is installed. BetonQuest enables after the lib, the HUD hooks in then.
+        if (Bukkit.getPluginManager().getPlugin("BetonQuest") != null) {
+            try {
+                hud = DialogueHud.enable(this);
+            } catch (Exception | LinkageError e) {
+                getLogger().log(Level.SEVERE, "Dialogue HUD stays off", e);
+            }
+        }
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        // takes the dialogues off the players' screens
+        if (hud != null) {
+            hud.disable();
+        }
     }
 }

@@ -16,6 +16,9 @@ commands:
     usage: /vote
     aliases: [voten]
 permissions:
+  dialoguehud.admin:
+    description: Allows /dialoguehud reload and /dialoguehud preview.
+    default: op
   ghostblocks.admin:
     description: Allows /ghostblocks.
     default: op
