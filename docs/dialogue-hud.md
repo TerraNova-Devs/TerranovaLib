@@ -180,6 +180,11 @@ commit a7ca3dc). In the lib it hooks into BetonQuest when BetonQuest enables, si
 the lib loads before Nexo and BetonQuest; otherwise the code is unchanged. The log
 lines are the same, with the prefix `[TerraNovaLib]`.
 
+Started from the lib on the prod mirror (24.10., merge c561801 with the NPC layer and
+rice, BetonquestAdditions removed): `terranova_hud` registered, frame measured,
+6 lines per page, three BetonQuest integrations from TerranovaLib, no errors on main
+or farm. Not yet checked in game from the lib.
+
 Not yet checked in game, to be done on the test server with a vanilla client:
 
 1. HUD shows on a vanilla client, at GUI scales 2, 3 and 4.
