@@ -1,0 +1,435 @@
+# Dialogue HUD frame. Copy this nexo/ folder's contents into plugins/Nexo/ (the
+# textures are under pack/assets/minecraft/textures/terranova/dialogue/), then run
+# /nexo reload all and /dialoguehud reload.
+#
+# height 22 with ascent 14 puts the 8 px vanilla text line in the middle: 3 px
+# border and 4 px of fill above and below it (16 px looked squeezed, 16.10.).
+# The glyphs live in their own font, so their characters never collide with
+# anything typed in chat.
+#
+# Never change a char once the pack is live: it is baked into the generated pack.
+
+dialogue_left:
+  texture: terranova/dialogue/dialogue_left
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_right:
+  texture: terranova/dialogue/dialogue_right
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_1:
+  texture: terranova/dialogue/dialogue_mid_1
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_2:
+  texture: terranova/dialogue/dialogue_mid_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_4:
+  texture: terranova/dialogue/dialogue_mid_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_8:
+  texture: terranova/dialogue/dialogue_mid_8
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_16:
+  texture: terranova/dialogue/dialogue_mid_16
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_32:
+  texture: terranova/dialogue/dialogue_mid_32
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_64:
+  texture: terranova/dialogue/dialogue_mid_64
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+dialogue_mid_128:
+  texture: terranova/dialogue/dialogue_mid_128
+  font: terranova:dialogue
+  char: ""
+  ascent: 14
+  height: 22
+
+# ---- Frames for 2 to 6 lines -------------------------------------------------
+# The same pieces, taller: height 10 * lines + 12, ascent 10 * lines + 4, so the
+# frame grows upwards with the text rows (10 px apart) and its bottom stays where
+# the one-line frame's is. Chars U+E010 onwards, 16 per line count.
+
+dialogue_left_2:
+  texture: terranova/dialogue/dialogue_left_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_right_2:
+  texture: terranova/dialogue/dialogue_right_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_1_2:
+  texture: terranova/dialogue/dialogue_mid_1_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_2_2:
+  texture: terranova/dialogue/dialogue_mid_2_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_4_2:
+  texture: terranova/dialogue/dialogue_mid_4_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_8_2:
+  texture: terranova/dialogue/dialogue_mid_8_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_16_2:
+  texture: terranova/dialogue/dialogue_mid_16_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_32_2:
+  texture: terranova/dialogue/dialogue_mid_32_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_64_2:
+  texture: terranova/dialogue/dialogue_mid_64_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_mid_128_2:
+  texture: terranova/dialogue/dialogue_mid_128_2
+  font: terranova:dialogue
+  char: ""
+  ascent: 24
+  height: 32
+
+dialogue_left_3:
+  texture: terranova/dialogue/dialogue_left_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_right_3:
+  texture: terranova/dialogue/dialogue_right_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_1_3:
+  texture: terranova/dialogue/dialogue_mid_1_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_2_3:
+  texture: terranova/dialogue/dialogue_mid_2_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_4_3:
+  texture: terranova/dialogue/dialogue_mid_4_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_8_3:
+  texture: terranova/dialogue/dialogue_mid_8_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_16_3:
+  texture: terranova/dialogue/dialogue_mid_16_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_32_3:
+  texture: terranova/dialogue/dialogue_mid_32_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_64_3:
+  texture: terranova/dialogue/dialogue_mid_64_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_mid_128_3:
+  texture: terranova/dialogue/dialogue_mid_128_3
+  font: terranova:dialogue
+  char: ""
+  ascent: 34
+  height: 42
+
+dialogue_left_4:
+  texture: terranova/dialogue/dialogue_left_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_right_4:
+  texture: terranova/dialogue/dialogue_right_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_1_4:
+  texture: terranova/dialogue/dialogue_mid_1_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_2_4:
+  texture: terranova/dialogue/dialogue_mid_2_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_4_4:
+  texture: terranova/dialogue/dialogue_mid_4_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_8_4:
+  texture: terranova/dialogue/dialogue_mid_8_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_16_4:
+  texture: terranova/dialogue/dialogue_mid_16_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_32_4:
+  texture: terranova/dialogue/dialogue_mid_32_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_64_4:
+  texture: terranova/dialogue/dialogue_mid_64_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_mid_128_4:
+  texture: terranova/dialogue/dialogue_mid_128_4
+  font: terranova:dialogue
+  char: ""
+  ascent: 44
+  height: 52
+
+dialogue_left_5:
+  texture: terranova/dialogue/dialogue_left_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_right_5:
+  texture: terranova/dialogue/dialogue_right_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_1_5:
+  texture: terranova/dialogue/dialogue_mid_1_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_2_5:
+  texture: terranova/dialogue/dialogue_mid_2_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_4_5:
+  texture: terranova/dialogue/dialogue_mid_4_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_8_5:
+  texture: terranova/dialogue/dialogue_mid_8_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_16_5:
+  texture: terranova/dialogue/dialogue_mid_16_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_32_5:
+  texture: terranova/dialogue/dialogue_mid_32_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_64_5:
+  texture: terranova/dialogue/dialogue_mid_64_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_mid_128_5:
+  texture: terranova/dialogue/dialogue_mid_128_5
+  font: terranova:dialogue
+  char: ""
+  ascent: 54
+  height: 62
+
+dialogue_left_6:
+  texture: terranova/dialogue/dialogue_left_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_right_6:
+  texture: terranova/dialogue/dialogue_right_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_1_6:
+  texture: terranova/dialogue/dialogue_mid_1_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_2_6:
+  texture: terranova/dialogue/dialogue_mid_2_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_4_6:
+  texture: terranova/dialogue/dialogue_mid_4_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_8_6:
+  texture: terranova/dialogue/dialogue_mid_8_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_16_6:
+  texture: terranova/dialogue/dialogue_mid_16_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_32_6:
+  texture: terranova/dialogue/dialogue_mid_32_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_64_6:
+  texture: terranova/dialogue/dialogue_mid_64_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
+
+dialogue_mid_128_6:
+  texture: terranova/dialogue/dialogue_mid_128_6
+  font: terranova:dialogue
+  char: ""
+  ascent: 64
+  height: 72
