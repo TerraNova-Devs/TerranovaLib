@@ -6,6 +6,7 @@ import com.nekyia.heroicmap.api.Layer;
 import com.nekyia.heroicmap.api.MapObject.Pin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Spawned;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Bukkit;
@@ -39,6 +40,9 @@ public final class NpcMapLayer {
     private static final int MAX_PINS = 1000;
     private static final int MAX_HEADS = 256;
 
+    // Nations gives the NPC of each town this trait and the town's name; without Nations no NPC has it
+    private static final String TOWN_TRAIT = "nations-settlement-uuid";
+
     private final Layer layer;
 
     private final Logger logger;
@@ -62,12 +66,23 @@ public final class NpcMapLayer {
                 "HeroicMap is enabled but offers no API");
         final Layer layer = api.layer(plugin, "npcs");
         layer.name("NPCs", "NPCs");
+        // no visible(true) on purpose: the layer starts off in the mod, decided by the user; viewers switch it on
         final NpcMapLayer feature = new NpcMapLayer(layer, plugin.getLogger());
         // Citizens loads its NPCs a tick after the start; the first run after 1 s finds them
         Bukkit.getScheduler().runTaskTimer(plugin, feature::sync, 20, PERIOD_TICKS);
     }
 
     private void sync() {
+        final List<String> townNpcs = new ArrayList<>();
+        for (final NPC npc : CitizensAPI.getNPCRegistry()) {
+            for (final Trait trait : npc.getTraits()) {
+                if (TOWN_TRAIT.equals(trait.getName())) {
+                    townNpcs.add(npc.getFullName());
+                }
+            }
+        }
+        final Set<String> cities = cityNames(townNpcs);
+
         final List<Pin> pins = new ArrayList<>();
         final Set<String> heads = new HashSet<>();
         for (final NPC npc : CitizensAPI.getNPCRegistry().sorted()) {
@@ -78,12 +93,30 @@ public final class NpcMapLayer {
                 }
                 break;
             }
-            final Pin pin = pin(npc, heads);
+            final Pin pin = pin(npc, heads, cities);
             if (pin != null) {
                 pins.add(pin);
             }
         }
         apply(pins);
+    }
+
+    /** The names of the towns, cleaned and in lower case, from the names of the NPCs Nations made for them. */
+    static Set<String> cityNames(final Iterable<String> townNpcNames) {
+        final Set<String> cities = new HashSet<>();
+        for (final String name : townNpcNames) {
+            final String key = MapName.key(name);
+            if (key != null) {
+                cities.add(key);
+            }
+        }
+        return cities;
+    }
+
+    /** Whether an NPC is named like a town, ignoring case, tags and colour codes; those stay off the map. */
+    static boolean isCity(final String name, final Set<String> cities) {
+        final String key = MapName.key(name);
+        return key != null && cities.contains(key);
     }
 
     /**
@@ -124,12 +157,12 @@ public final class NpcMapLayer {
     }
 
     /** The pin of an NPC, or null for one without name or spot, or one that is hidden. */
-    private @Nullable Pin pin(final NPC npc, final Set<String> heads) {
+    private @Nullable Pin pin(final NPC npc, final Set<String> heads, final Set<String> cities) {
         final Location location = npc.getStoredLocation();
         final String name = MapName.of(npc.getFullName());
         final Spawned spawned = npc.getTraitNullable(Spawned.class);
         // hidden: name tag switched off, or despawned on purpose (not just in an unloaded chunk)
-        if (location == null || location.getWorld() == null || name == null
+        if (location == null || location.getWorld() == null || name == null || isCity(name, cities)
                 || "false".equals(String.valueOf(npc.data().get(NPC.Metadata.NAMEPLATE_VISIBLE, true)))
                 || spawned != null && !spawned.shouldSpawn()) {
             return null;

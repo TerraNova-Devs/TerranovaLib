@@ -99,6 +99,13 @@ pin with the NPC's name at its stored spot, with its face if it has a player ski
   stripped, cut to the 64 characters of a pin.
 - **Left out:** NPCs without a name or stored spot, with the name tag switched
   off, or despawned on purpose. Mob NPCs get a plain pin.
+- **Towns:** NPCs named like a town stay off, ignoring case, tags and colour
+  codes. The town names are the names of the NPCs Nations makes for its towns,
+  found by their Citizens trait `nations-settlement-uuid`, so the lib needs no
+  classes of Nations (Nations depends on the lib). Without Nations nothing is
+  filtered.
+- **Off in the mod** at first (`visible` stays false, decided so); viewers
+  switch it on.
 - **Rejected:** a pin HeroicMap rejects is tried once more without its head,
   else left out, one log line per pin; the other NPCs still go up.
 - **Limits of HeroicMap:** 1000 pins and 256 different heads per layer; above

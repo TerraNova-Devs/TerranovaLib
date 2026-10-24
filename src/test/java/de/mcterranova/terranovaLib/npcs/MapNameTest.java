@@ -25,6 +25,13 @@ class MapNameTest {
     }
 
     @Test
+    void keyIsThePlainNameInLowerCase() {
+        assertEquals("porta bellagio", MapName.key("<gold>Porta Bellagio</gold>"));
+        assertEquals("porta bellagio", MapName.key("§6PORTA  bellagio"));
+        assertNull(MapName.key("<red></red>"));
+    }
+
+    @Test
     void nothingLeftIsNoName() {
         assertNull(MapName.of(null));
         assertNull(MapName.of(""));

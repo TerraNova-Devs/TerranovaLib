@@ -3,6 +3,7 @@ package de.mcterranova.terranovaLib.npcs;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -36,5 +37,11 @@ public final class MapName {
             plain = plain.substring(0, end).trim();
         }
         return plain.isEmpty() ? null : plain;
+    }
+
+    /** The plain name in lower case, to compare names without case; null if nothing is left. */
+    public static @Nullable String key(@Nullable final String name) {
+        final String plain = of(name);
+        return plain == null ? null : plain.toLowerCase(Locale.ROOT);
     }
 }

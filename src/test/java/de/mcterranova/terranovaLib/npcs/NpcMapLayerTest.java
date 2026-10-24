@@ -10,10 +10,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NpcMapLayerTest {
 
@@ -59,6 +62,19 @@ class NpcMapLayerTest {
         assertEquals(HEAD, ((Pin) fake.objects.get("npc-2")).head());
         assertNull(((Pin) fake.objects.get("npc-badhead")).head());
         assertNull(fake.objects.get("npc-bad"));
+    }
+
+    @Test
+    void npcsNamedLikeATownAreCities() {
+        final Set<String> cities = NpcMapLayer.cityNames(List.of("<gold>Porta Bellagio</gold>", "Hafenstadt", "<red></red>"));
+
+        assertEquals(Set.of("porta bellagio", "hafenstadt"), cities);
+        assertTrue(NpcMapLayer.isCity("Porta Bellagio", cities));
+        assertTrue(NpcMapLayer.isCity("§bHAFENSTADT", cities));
+        assertFalse(NpcMapLayer.isCity("Friedolin", cities));
+        assertFalse(NpcMapLayer.isCity("Porta", cities));
+        // without Nations no NPC has the town trait, so nothing is a city
+        assertFalse(NpcMapLayer.isCity("Porta Bellagio", NpcMapLayer.cityNames(List.of())));
     }
 
     @Test
